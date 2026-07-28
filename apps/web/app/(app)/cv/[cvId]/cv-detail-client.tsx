@@ -6,7 +6,7 @@ import type { Cv } from "@offerly/types";
 import { api, PaywallError } from "@/lib/api";
 import { useApi } from "@/lib/use-api";
 import type { CvAnalysisWithResult, UpgradeRequiredPayload } from "@/lib/contract";
-import { formatDate } from "@/lib/format";
+import { cvDisplayName, formatDate } from "@/lib/format";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { Card, CardBody, CardHeader } from "@/components/card";
@@ -81,7 +81,7 @@ export function CvDetailClient({ cvId }: { cvId: string }) {
             ← All CVs
           </Link>
           <h1 className="mt-1 text-2xl font-bold tracking-tight text-neutral-900">
-            {cv?.file_path ? cv.file_path.split("/").pop() : "Pasted text CV"}
+            {cv ? cvDisplayName(cv) : "CV"}
           </h1>
         </div>
         <Button onClick={runAnalysis} loading={analyzing}>

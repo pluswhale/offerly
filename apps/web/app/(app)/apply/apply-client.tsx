@@ -8,6 +8,7 @@ import { useApi } from "@/lib/use-api";
 import type { ApplyGeneration, UpgradeRequiredPayload } from "@/lib/contract";
 import { Button } from "@/components/button";
 import { Card, CardBody, CardHeader } from "@/components/card";
+import { CvSelector } from "@/components/cv-selector";
 import { EmptyState } from "@/components/empty-state";
 import { Input } from "@/components/input";
 import { PaywallModal } from "@/components/paywall-modal";
@@ -16,7 +17,9 @@ import { Textarea } from "@/components/textarea";
 
 export function ApplyClient({ initialJobId }: { initialJobId: string | null }) {
   const [jobId, setJobId] = useState<string | null>(initialJobId);
-  const { data: cvs, loading: cvsLoading } = useApi<Cv[]>(() => api<Cv[]>("/cvs"));
+  const { data: cvs, loading: cvsLoading, refetch: refetchCvs } = useApi<Cv[]>(() =>
+    api<Cv[]>("/cvs"),
+  );
   const { data: applications, loading: appsLoading } = useApi<Application[]>(() =>
     api<Application[]>("/applications"),
   );
@@ -105,6 +108,14 @@ export function ApplyClient({ initialJobId }: { initialJobId: string | null }) {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader />
+
+      {/* A generated draft is grounded in the old CV — clear it on switch. */}
+      <CvSelector
+        onChanged={() => {
+          refetchCvs();
+          setGeneration(null);
+        }}
+      />
 
       {/* Job picker */}
       <Card>

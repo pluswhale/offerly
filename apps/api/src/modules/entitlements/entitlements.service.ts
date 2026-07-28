@@ -69,6 +69,23 @@ export class EntitlementsService {
     const db = this.supabase.forUser(token);
 
     switch (feature) {
+      case "cv_create": {
+        // Replace flow keeps the stored count unchanged — always allowed.
+        const body = ctx.body as { replace_cv_id?: string } | undefined;
+        if (body?.replace_cv_id) return null;
+        const { count } = await db
+          .from("cvs")
+          .select("id", { count: "exact", head: true })
+          .eq("user_id", userId);
+        if ((count ?? 0) >= limits.storedCvs) {
+          return {
+            feature,
+            reason: `Free plan stores ${limits.storedCvs} CV — replace it or upgrade to Pro for unlimited CVs`,
+          };
+        }
+        return null;
+      }
+
       case "coach": {
         if (!limits.coach) {
           return { feature, reason: "The AI coach is a Pro feature" };

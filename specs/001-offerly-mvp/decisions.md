@@ -148,6 +148,7 @@ Date: 2026-07-28. Full API implementation per plan §3 endpoint table.
 
 ## Contract fixes (2026-07-28, local run)
 
+- **Multiple CVs per user (spec update).** Users can store multiple named CVs; exactly one is `is_active`. The selector in each CV-dependent section (Analyzer, Match, Apply, Coach) simply switches `is_active` — match/apply/coach keep resolving the active CV, no per-operation `cv_id` parameter. Free tier stores 1 CV (`PLAN_LIMITS.storedCvs`), Pro unlimited; a free upload at the limit offers replace-or-upgrade. `cvs.name` added for selector display labels (default: filename, or "Pasted CV").
 - **CV upload contract misaligned frontend↔backend (bug fix).** Frontend sent `pasted_text` (backend expects `text`) and omitted `size_bytes` on the signed-upload request; it also read `upload_url` while the API returns `signed_url`, and never called `POST /cvs/confirm` — meaning uploaded files would never get text extraction. Fixed in `apps/web/lib/contract.ts`, `apps/web/components/cv-upload-form.tsx`, `apps/web/app/onboarding/page.tsx` to match the API contract in plan §3/§9: `{text}` for paste, `{filename, content_type, size_bytes}` → `{cv, signed_url, path}` → PUT file → `POST /cvs/confirm {cv_id}` (422 there = scanned PDF, paste fallback). Backend was authoritative per the plan; no API change.
 
 ## Billing flow fixes (2026-07-28, local run)

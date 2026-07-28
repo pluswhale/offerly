@@ -131,6 +131,9 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 - Returns: overall score, section-by-section feedback (impact, clarity, keywords, formatting), and a prioritized list of concrete improvements.
 - Free tier: one full analysis of one CV version (basic depth). Pro: unlimited analyses, deeper analysis, re-analysis after edits with diff-style progress ("you fixed 2 of 5 issues").
 - Results are cached per CV content hash (constitution §V): re-uploading an unchanged CV costs nothing.
+- Users can store multiple named CVs; exactly one is **active** at a time (newly uploaded CV becomes active).
+- A CV selector sits at the top of every CV-dependent section (CV Analyzer, Job Match, Apply Assistant, AI Coach); choosing a CV there switches the active CV for the whole account.
+- CVs can be renamed and deleted.
 
 **Edge cases:**
 
@@ -138,12 +141,14 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 - CV not in English → detect language; analyze in-place but warn that most target markets expect English (no translation feature in MVP).
 - Very long CV → truncate intelligently, tell the user what was analyzed.
 - Prompt-injection text inside a CV is treated as data, never as instructions (constitution §III).
+- Free user at the 1-CV storage limit uploads another CV → offer a choice: replace the existing CV or upgrade to Pro.
+- Deleting the active CV → no active CV remains; CV-dependent sections show the upload prompt again.
 
 **Free vs paid:**
 
 | Free | Pro |
 |---|---|
-| 1 analysis, 1 CV version, basic depth | Unlimited analyses & versions, deep analysis, progress tracking across versions |
+| 1 analysis, 1 CV version, 1 stored CV, basic depth | Unlimited analyses, versions & stored CVs, deep analysis, progress tracking across versions |
 
 ---
 
@@ -158,6 +163,7 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 - Input: pasted job description (URL import only if a simple fetch works reliably; paste is the guaranteed path).
 - Output: 0–100 match score, matched strengths, missing keywords/requirements, and 2–3 recommendations to improve fit.
 - Requires an uploaded CV; if missing, prompts to upload first (progressive profiling hook).
+- Matches against the active CV; the CV selector (§5.2) at the top of the section switches it.
 - Match results are saved and linked to the job if the user adds it to the tracker.
 
 **Edge cases:**
@@ -186,6 +192,7 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 - Generates: tailored cover letter, answers to free-text application questions, and vacancy-specific recommendations (what to emphasize).
 - Output is editable in place before copying; regeneration with an instruction ("shorter", "more formal") is supported.
 - Grounded in the user's actual CV — must not invent experience; clearly flags when the job asks for something the CV doesn't show.
+- Uses the active CV; the CV selector (§5.2) at the top of the section switches it.
 - **Pro-only feature** (with a free-tier preview: one watermarked/sample generation so the value is felt before paying).
 
 **Edge cases:**
@@ -240,6 +247,7 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 **Acceptance criteria:**
 
 - Conversational interface; every response grounded in user context (CV, target role, tracked jobs).
+- Uses the active CV as context; the CV selector (§5.2) at the top of the section switches it.
 - **Pro-only.** Free users see a locked preview with one example interaction.
 - On first use, asks for any missing context (progressive profiling) instead of blocking onboarding earlier.
 - Coach suggests concrete actions that link back into the product ("Run a Job Match for this role", "Update your CV summary").
@@ -262,6 +270,7 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 
 - Limited AI requests per month (shared quota across CV Analyzer, Job Match; exact number set at implementation, default: **5/month**)
 - Basic CV analysis: 1 analysis, 1 CV version
+- 1 stored CV
 - Job Tracker: up to 10 active applications
 - Dashboard: full access
 - Apply Assistant: 1 sample generation
@@ -270,6 +279,7 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 ### Pro — subscription (Stripe; crypto payments are a documented future extension, not MVP scope)
 
 - Unlimited CV analyses and versions, deep analysis, progress tracking
+- Unlimited stored CVs
 - Unlimited Job Match with deep gap analysis
 - Full AI Apply Assistant
 - Unlimited applications in Job Tracker

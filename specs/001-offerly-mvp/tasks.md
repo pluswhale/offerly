@@ -230,6 +230,28 @@ Priority principles: fastest path to a usable free loop (CV → Match → Tracke
 
 ---
 
+## Phase 12 — Multiple CVs
+
+### T12.1 Multi-CV data model + management API
+- **Description:** Migration adding `cvs.name` (backfill: filename, or "Pasted CV" for pasted CVs). `PATCH /cvs/:id` (rename, set active — activating reuses the T5.1 deactivate-others logic), `DELETE /cvs/:id`. Free-tier `storedCvs: 1` limit in `PLAN_LIMITS` enforced on upload: a free user with an existing CV gets a replace-or-upgrade response instead of a second stored CV.
+- **Dependencies:** T5.1, T10.2
+- **Complexity:** M
+- **Acceptance criteria:** Rename/activate/delete work via API with RLS intact; exactly one active CV per user invariant holds (concurrent activates can't leave two active); free user uploading a 2nd CV receives the replace-or-upgrade response, Pro user uploads freely; deleting the active CV leaves no active CV; regression tests for upload → analyze → match still pass.
+
+### T12.2 CV selector component
+- **Description:** Shared `CvSelector` dropdown (CV name, active indicator) rendered at the top of the `cv`, `match`, `apply`, and `coach` pages. Selecting a CV calls the activate endpoint and refetches the section's data; zero CVs → upload prompt instead of a selector. Built from T1.4 primitives, mobile-first.
+- **Dependencies:** T12.1
+- **Complexity:** M
+- **Acceptance criteria:** Selector renders on all four sections at 360px and 1440px; switching CV updates the displayed analysis/match context without a full page reload; keyboard accessible; with one CV the selector is a static label, with zero it is the upload prompt.
+
+### T12.3 CV management UI + free-limit upsell
+- **Description:** CV list on the CV section: inline rename, delete with confirmation, set active, upload new. Free users hitting the 1-CV limit on upload see a dialog offering "Replace existing CV" or "Upgrade to Pro" (links to pricing, T10.3).
+- **Dependencies:** T12.1, T12.2
+- **Complexity:** M
+- **Acceptance criteria:** All management actions work end-to-end; deleting the only CV returns all CV-dependent sections to the upload-prompt state; the free-limit dialog offers both replace and upgrade paths; Playwright happy path (T11.3) extended with: upload 2nd CV as Pro → switch active via selector → run match against the newly active CV.
+
+---
+
 ## Validation Order & Parallelization
 
 - **Fastest validation path:** T1 → T2 → T4 → T5 → T6 → T8 (free loop usable) → **deploy T11.1 early** → T7, T9, T10.

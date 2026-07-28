@@ -75,10 +75,14 @@ export class CvsService {
   /** Paste flow: text stored directly, hash computed, becomes the active CV. */
   async createFromText(userId: string, token: string, text: string): Promise<Cv> {
     const db = this.supabase.forUser(token);
+    // Deactivate first: the one-active-per-user unique index rejects an
+    // insert while another row is still active.
+    await this.deactivateOthers(db, userId);
     const { data, error } = await db
       .from("cvs")
       .insert({
         user_id: userId,
+        name: "Pasted CV",
         file_path: null,
         extracted_text: text,
         content_hash: sha256Hex(normalizeForCache(text)),
@@ -87,7 +91,6 @@ export class CvsService {
       .select("*")
       .single();
     if (error) throw new Error(`Failed to save CV: ${error.message}`);
-    await this.deactivateOthers(db, userId, (data as Cv).id);
     return data as Cv;
   }
 
@@ -119,13 +122,14 @@ export class CvsService {
     const safeName = input.filename.replace(/[^a-zA-Z0-9._-]/g, "_");
     const path = `${userId}/${id}-${safeName}`;
 
+    // Deactivate first (one-active-per-user unique index), then insert active.
+    await this.deactivateOthers(db, userId);
     const { data, error } = await db
       .from("cvs")
-      .insert({ id, user_id: userId, file_path: path, is_active: true })
+      .insert({ id, user_id: userId, name: input.filename, file_path: path, is_active: true })
       .select("*")
       .single();
     if (error) throw new Error(`Failed to create CV row: ${error.message}`);
-    await this.deactivateOthers(db, userId, id);
 
     const { data: signed, error: signError } = await db.storage
       .from("cvs")
@@ -245,16 +249,69 @@ export class CvsService {
     return (data ?? []) as CvAnalysis[];
   }
 
-  /** One active CV per user (T5.1): deactivate all others. */
+  /**
+   * PATCH /cvs/:id (T12.1): rename and/or activate. Activation deactivates
+   * the others first so the one-active unique index is never violated.
+   */
+  async update(
+    userId: string,
+    token: string,
+    cvId: string,
+    patch: { name?: string; is_active?: boolean },
+  ): Promise<Cv> {
+    const cv = await this.getOwned(userId, token, cvId);
+
+    const updates: { name?: string; is_active?: boolean } = {};
+    if (patch.name !== undefined) {
+      const name = patch.name.trim();
+      if (name.length < 1 || name.length > 120) {
+        throw new UnprocessableEntityException({
+          message: "CV name must be 1–120 characters",
+          code: "invalid_name",
+        });
+      }
+      updates.name = name;
+    }
+    if (patch.is_active !== undefined) updates.is_active = patch.is_active;
+    if (Object.keys(updates).length === 0) return cv;
+
+    const db = this.supabase.forUser(token);
+    if (updates.is_active === true) await this.deactivateOthers(db, userId, cvId);
+    const { data, error } = await db
+      .from("cvs")
+      .update(updates)
+      .eq("id", cvId)
+      .eq("user_id", userId)
+      .select("*")
+      .single();
+    if (error) throw new Error(`Failed to update CV: ${error.message}`);
+    return data as Cv;
+  }
+
+  /**
+   * DELETE /cvs/:id (T12.1). cv_analyses and job_matches cascade on delete;
+   * the storage file is removed best-effort. Deleting the active CV
+   * intentionally leaves no active CV.
+   */
+  async remove(userId: string, token: string, cvId: string): Promise<void> {
+    const cv = await this.getOwned(userId, token, cvId);
+    const db = this.supabase.forUser(token);
+    if (cv.file_path) {
+      const { error } = await db.storage.from("cvs").remove([cv.file_path]);
+      if (error) console.warn(`Failed to delete CV file ${cv.file_path}: ${error.message}`);
+    }
+    const { error } = await db.from("cvs").delete().eq("id", cvId).eq("user_id", userId);
+    if (error) throw new Error(`Failed to delete CV: ${error.message}`);
+  }
+
+  /** One active CV per user (T5.1): deactivate all others (or all, pre-insert). */
   private async deactivateOthers(
     db: ReturnType<SupabaseService["forUser"]>,
     userId: string,
-    keepId: string,
+    keepId?: string,
   ): Promise<void> {
-    await db
-      .from("cvs")
-      .update({ is_active: false })
-      .eq("user_id", userId)
-      .neq("id", keepId);
+    let query = db.from("cvs").update({ is_active: false }).eq("user_id", userId);
+    if (keepId) query = query.neq("id", keepId);
+    await query;
   }
 }

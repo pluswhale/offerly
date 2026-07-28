@@ -12,6 +12,7 @@ import type {
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { Card, CardBody, CardHeader } from "@/components/card";
+import { CvSelector } from "@/components/cv-selector";
 import { EmptyState } from "@/components/empty-state";
 import { Input } from "@/components/input";
 import { PaywallModal } from "@/components/paywall-modal";
@@ -26,7 +27,9 @@ type Phase =
   | { kind: "result"; match: JobMatchWithResult; job: Job; saved: boolean };
 
 export function MatchClient() {
-  const { data: cvs, loading: cvsLoading } = useApi<Cv[]>(() => api<Cv[]>("/cvs"));
+  const { data: cvs, loading: cvsLoading, refetch: refetchCvs } = useApi<Cv[]>(() =>
+    api<Cv[]>("/cvs"),
+  );
   const { data: profile } = useApi<Profile>(() => api<Profile>("/profiles/me"));
 
   const [title, setTitle] = useState("");
@@ -115,6 +118,14 @@ export function MatchClient() {
   return (
     <div className="flex flex-col gap-6">
       <PageHeader />
+
+      {/* Switching CV invalidates the shown result — it was scored against the old one. */}
+      <CvSelector
+        onChanged={() => {
+          refetchCvs();
+          setPhase({ kind: "form" });
+        }}
+      />
 
       <Card>
         <CardBody>

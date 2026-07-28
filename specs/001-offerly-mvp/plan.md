@@ -104,6 +104,7 @@ Handled by **Supabase Auth** (`auth.users`) — we do not duplicate it. Our `pro
 | id | uuid PK | |
 | user_id | uuid → profiles | RLS: owner only |
 | file_path | text | Supabase Storage path, nullable if pasted |
+| name | text | display label; defaults to filename, or "Pasted CV" |
 | extracted_text | text | used for analysis |
 | content_hash | text | sha256 of normalized text → cache key |
 | is_active | bool | one active CV per user |
@@ -212,7 +213,7 @@ Shared across users (a CV+JD pair is identical work regardless of who asked) but
 | module | endpoints |
 |---|---|
 | profiles | `GET/PATCH /profiles/me` |
-| cvs | `POST /cvs` (signed-URL flow), `GET /cvs`, `POST /cvs/:id/analyze`, `GET /cvs/:id/analyses` |
+| cvs | `POST /cvs` (signed-URL flow), `GET /cvs`, `PATCH /cvs/:id` (rename/set active), `DELETE /cvs/:id`, `POST /cvs/:id/analyze`, `GET /cvs/:id/analyses` |
 | jobs | `POST /jobs`, `GET /jobs/:id` |
 | job match | `POST /jobs/:id/match`, `GET /jobs/:id/match` |
 | applications | CRUD `GET/POST/PATCH/DELETE /applications` |
@@ -245,9 +246,9 @@ Two layers, both server-side (constitution §III):
 ```ts
 // packages/types/src/plans.ts (concept)
 const PLAN_LIMITS = {
-  free: { aiRequestsPerMonth: 5, cvAnalyses: 1, activeApplications: 10,
+  free: { aiRequestsPerMonth: 5, cvAnalyses: 1, storedCvs: 1, activeApplications: 10,
           applyAssistant: 'sample', coach: false, matchDepth: 'basic' },
-  pro:  { aiRequestsPerMonth: Infinity, cvAnalyses: Infinity, activeApplications: Infinity,
+  pro:  { aiRequestsPerMonth: Infinity, cvAnalyses: Infinity, storedCvs: Infinity, activeApplications: Infinity,
           applyAssistant: 'full', coach: true, matchDepth: 'deep' },
 };
 ```

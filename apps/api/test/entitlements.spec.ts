@@ -35,6 +35,27 @@ describe("EntitlementsService.getPlan", () => {
 });
 
 describe("EntitlementsService decision matrix (T10.2)", () => {
+  it("cv_create: free blocked at the 1-CV limit unless replacing; pro unlimited", async () => {
+    const atLimit = makeService({ subscriptions: [FREE], cvs: [{ count: 1 }] });
+    expect(
+      await atLimit.service.checkAccess(USER, TOKEN, "cv_create", { body: {} }),
+    ).toMatchObject({ feature: "cv_create" });
+
+    // Replace flow keeps the stored count unchanged — allowed at the limit.
+    const replacing = makeService({ subscriptions: [FREE], cvs: [{ count: 1 }] });
+    expect(
+      await replacing.service.checkAccess(USER, TOKEN, "cv_create", {
+        body: { replace_cv_id: "cv-1" },
+      }),
+    ).toBeNull();
+
+    const first = makeService({ subscriptions: [FREE], cvs: [{ count: 0 }] });
+    expect(await first.service.checkAccess(USER, TOKEN, "cv_create", { body: {} })).toBeNull();
+
+    const pro = makeService({ subscriptions: [PRO], cvs: [{ count: 50 }] });
+    expect(await pro.service.checkAccess(USER, TOKEN, "cv_create", { body: {} })).toBeNull();
+  });
+
   it("coach: free → denied, pro → allowed", async () => {
     const free = makeService({ subscriptions: [FREE] });
     expect(await free.service.checkAccess(USER, TOKEN, "coach")).toMatchObject({

@@ -13,9 +13,26 @@ export interface Terminal {
 export class FakeSupabaseClient {
   /** Recorded mutating calls for assertions: [table, method, payload]. */
   readonly calls: Array<{ table: string; method: string; payload: unknown }> = [];
+  /** Recorded storage calls for assertions. */
+  readonly storageCalls: Array<{ bucket: string; method: string; args: unknown[] }> = [];
+  /** When set, storage.remove resolves with this error (best-effort delete tests). */
+  storageRemoveError: { message: string } | null = null;
   private readonly queues = new Map<string, Terminal[]>();
 
   constructor(private readonly defaults: Record<string, Terminal> = {}) {}
+
+  readonly storage = {
+    from: (bucket: string) => ({
+      createSignedUploadUrl: async (path: string) => {
+        this.storageCalls.push({ bucket, method: "createSignedUploadUrl", args: [path] });
+        return { data: { signedUrl: `https://storage.test/${path}` }, error: null };
+      },
+      remove: async (paths: string[]) => {
+        this.storageCalls.push({ bucket, method: "remove", args: paths });
+        return { data: null, error: this.storageRemoveError };
+      },
+    }),
+  };
 
   /** Queue terminal results for a table (consumed in order, last one repeats). */
   queue(table: string, terminals: Terminal[]): this {

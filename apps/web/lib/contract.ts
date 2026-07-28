@@ -50,11 +50,14 @@ export interface CreateCvUploadRequest {
   filename: string;
   content_type: "application/pdf" | "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
   size_bytes: number;
+  /** Free-tier replace flow (T12.1): owned CV to delete before creating. */
+  replace_cv_id?: string;
 }
 
 /** POST /cvs with pasted text instead of a file. */
 export interface CreateCvPasteRequest {
   text: string;
+  replace_cv_id?: string;
 }
 
 export interface CreateCvUploadResponse {

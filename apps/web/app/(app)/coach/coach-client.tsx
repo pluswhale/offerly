@@ -9,6 +9,7 @@ import { useApi } from "@/lib/use-api";
 import type { CoachConversation } from "@/lib/contract";
 import { Button } from "@/components/button";
 import { Card, CardBody } from "@/components/card";
+import { CvSelector } from "@/components/cv-selector";
 import { ProgressiveProfilePrompt } from "@/components/progressive-profile-prompt";
 import { Skeleton } from "@/components/skeleton";
 import { UpgradeButton } from "@/components/upgrade-button";
@@ -159,6 +160,9 @@ export function CoachClient() {
           Career guidance grounded in your CV, target role, and pipeline.
         </p>
       </div>
+
+      {/* The coach reads the active CV server-side on every message. */}
+      <CvSelector />
 
       <ProgressiveProfilePrompt
         profile={profile}

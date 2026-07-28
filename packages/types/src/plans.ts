@@ -3,6 +3,7 @@ import type { AnalysisDepth, SubscriptionPlan } from "./db.js";
 export interface PlanLimits {
   aiRequestsPerMonth: number;
   cvAnalyses: number;
+  storedCvs: number;
   activeApplications: number;
   applyAssistant: "sample" | "full";
   coach: boolean;
@@ -18,6 +19,7 @@ export const PLAN_LIMITS: Record<SubscriptionPlan, PlanLimits> = {
   free: {
     aiRequestsPerMonth: 5,
     cvAnalyses: 1,
+    storedCvs: 1,
     activeApplications: 10,
     applyAssistant: "sample",
     coach: false,
@@ -26,6 +28,7 @@ export const PLAN_LIMITS: Record<SubscriptionPlan, PlanLimits> = {
   pro: {
     aiRequestsPerMonth: Infinity,
     cvAnalyses: Infinity,
+    storedCvs: Infinity,
     activeApplications: Infinity,
     applyAssistant: "full",
     coach: true,

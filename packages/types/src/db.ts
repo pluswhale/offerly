@@ -27,6 +27,7 @@ export interface Profile {
 export interface Cv {
   id: string;
   user_id: string;
+  name: string; // user-facing label: filename for uploads, "Pasted CV" otherwise
   file_path: string | null; // Supabase Storage path, null if pasted
   extracted_text: string | null;
   content_hash: string | null; // sha256 of normalized text

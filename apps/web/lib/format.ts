@@ -9,8 +9,7 @@ export function formatDate(iso: string | null | undefined): string {
   });
 }
 
-export function formatRelative(iso: string): string {
-  const then = new Date(iso).getTime();
+export function formatRelative(iso: string): string {  const then = new Date(iso).getTime();
   if (Number.isNaN(then)) return "";
   const diffMs = Date.now() - then;
   const minutes = Math.floor(diffMs / 60000);
@@ -21,4 +20,10 @@ export function formatRelative(iso: string): string {
   const days = Math.floor(hours / 24);
   if (days < 30) return `${days}d ago`;
   return formatDate(iso);
+}
+
+/** Display label for a CV: its name, with the pre-T12.1 derivation as fallback. */
+export function cvDisplayName(cv: { name?: string | null; file_path: string | null }): string {
+  if (cv.name) return cv.name;
+  return cv.file_path ? (cv.file_path.split("/").pop() ?? "CV") : "Pasted text CV";
 }

@@ -2,24 +2,37 @@
 
 import { useRef, useState } from "react";
 import type { Cv } from "@offerly/types";
-import { api } from "@/lib/api";
+import { api, PaywallError } from "@/lib/api";
 import type { CreateCvUploadResponse } from "@/lib/contract";
+import { cvDisplayName } from "@/lib/format";
 import { Button } from "./button";
+import { Modal } from "./modal";
 import { Textarea } from "./textarea";
+import { UpgradeButton } from "./upgrade-button";
 
 /**
  * CV upload form (T5.1/T5.3): PDF/DOCX via the signed-URL flow, or pasted
  * text (also the fallback for unreadable/scanned PDFs, spec §5.2).
+ * Free-tier 1-CV limit (T12.3): a cv_create 402 opens a replace-or-upgrade
+ * dialog; "replace" retries the same submission with replace_cv_id set.
  */
-export function CvUploadForm({ onUploaded }: { onUploaded: (cv: Cv) => void }) {
+export function CvUploadForm({
+  onUploaded,
+  replaceCv,
+}: {
+  onUploaded: (cv: Cv) => void;
+  /** CV offered for replacement when the free 1-CV limit is hit. */
+  replaceCv?: Cv;
+}) {
   const [mode, setMode] = useState<"upload" | "paste">("upload");
   const [pastedText, setPastedText] = useState("");
   const [fileName, setFileName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [limitHit, setLimitHit] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  async function submit() {
+  async function submit(replaceCvId?: string) {
     setSaving(true);
     setError(null);
     try {
@@ -27,7 +40,7 @@ export function CvUploadForm({ onUploaded }: { onUploaded: (cv: Cv) => void }) {
       if (mode === "paste") {
         cv = await api<Cv>("/cvs", {
           method: "POST",
-          json: { text: pastedText.trim() },
+          json: { text: pastedText.trim(), ...(replaceCvId ? { replace_cv_id: replaceCvId } : {}) },
         });
       } else {
         const file = fileRef.current?.files?.[0];
@@ -36,7 +49,12 @@ export function CvUploadForm({ onUploaded }: { onUploaded: (cv: Cv) => void }) {
           throw new Error("Files over 5 MB are not supported — paste the text instead");
         const created = await api<CreateCvUploadResponse>("/cvs", {
           method: "POST",
-          json: { filename: file.name, content_type: file.type, size_bytes: file.size },
+          json: {
+            filename: file.name,
+            content_type: file.type,
+            size_bytes: file.size,
+            ...(replaceCvId ? { replace_cv_id: replaceCvId } : {}),
+          },
         });
         const res = await fetch(created.signed_url, { method: "PUT", body: file });
         if (!res.ok)
@@ -53,7 +71,8 @@ export function CvUploadForm({ onUploaded }: { onUploaded: (cv: Cv) => void }) {
       setFileName(null);
       onUploaded(cv);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not save your CV");
+      if (err instanceof PaywallError && err.payload.feature === "cv_create") setLimitHit(true);
+      else setError(err instanceof Error ? err.message : "Could not save your CV");
     } finally {
       setSaving(false);
     }
@@ -117,13 +136,42 @@ export function CvUploadForm({ onUploaded }: { onUploaded: (cv: Cv) => void }) {
       )}
 
       <Button
-        onClick={submit}
+        onClick={() => void submit()}
         loading={saving}
         disabled={mode === "upload" ? !fileName : pastedText.trim().length < 50}
         className="self-start"
       >
         Save CV
       </Button>
+
+      <Modal open={limitHit} onClose={() => setLimitHit(false)} title="CV limit reached">
+        <div className="flex flex-col gap-4">
+          <p className="text-sm text-neutral-700">
+            The free plan stores 1 CV. Replace{" "}
+            <span className="font-medium">
+              {replaceCv ? cvDisplayName(replaceCv) : "your existing CV"}
+            </span>{" "}
+            with this one, or upgrade to Pro for unlimited CVs.
+          </p>
+          <div className="flex flex-col gap-2">
+            {replaceCv && (
+              <Button
+                loading={saving}
+                onClick={() => {
+                  setLimitHit(false);
+                  void submit(replaceCv.id);
+                }}
+              >
+                Replace existing CV
+              </Button>
+            )}
+            <UpgradeButton />
+          </div>
+          <p className="text-xs text-neutral-500">
+            Replacing deletes the old CV together with its analyses and job matches.
+          </p>
+        </div>
+      </Modal>
     </div>
   );
 }
