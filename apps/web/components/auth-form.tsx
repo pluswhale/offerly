@@ -13,9 +13,15 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(
+    // Surfaced when the OAuth callback bounces the user back here (specs/002, T1.1).
+    searchParams.get("error") === "auth"
+      ? "Google sign-in didn't complete. Please try again, or use email instead."
+      : null,
+  );
   const [notice, setNotice] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const next = searchParams.get("next") ?? "/dashboard";
 
@@ -52,6 +58,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
 
   async function onGoogle() {
     setError(null);
+    setGoogleLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
@@ -59,7 +66,11 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
         redirectTo: `${window.location.origin}/callback?next=${encodeURIComponent(next)}`,
       },
     });
-    if (error) setError(error.message);
+    // On success the browser navigates away; keep the pending state until then.
+    if (error) {
+      setError(error.message);
+      setGoogleLoading(false);
+    }
   }
 
   return (
@@ -73,7 +84,7 @@ export function AuthForm({ mode }: { mode: "login" | "signup" }) {
           : "Free to start. No credit card required."}
       </p>
 
-      <Button type="button" variant="secondary" className="w-full" onClick={onGoogle}>
+      <Button type="button" variant="secondary" className="w-full" onClick={onGoogle} loading={googleLoading}>
         <GoogleIcon />
         Continue with Google
       </Button>
