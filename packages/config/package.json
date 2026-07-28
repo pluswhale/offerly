@@ -1,0 +1,13 @@
+{
+  "name": "@offerly/config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "tsconfig",
+    "eslint"
+  ],
+  "devDependencies": {
+    "eslint": "9.39.5",
+    "typescript-eslint": "8.65.0"
+  }
+}
