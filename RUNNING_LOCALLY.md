@@ -55,7 +55,17 @@ pnpm dlx supabase link --project-ref <project-ref>
 pnpm dlx supabase db push
 ```
 
-This creates all tables, RLS policies, triggers, and the private `cvs` storage bucket. In the Supabase dashboard also enable **Google OAuth** (Authentication → Providers) if you want the Google button to work; email/password works out of the box.
+This creates all tables, RLS policies, triggers, and the private `cvs` storage bucket. Email/password auth works out of the box.
+
+### Google OAuth setup (one-time)
+
+The "Continue with Google" button needs a Google OAuth client wired into Supabase:
+
+1. **Google Cloud Console** → APIs & Services → OAuth consent screen: External, app name "Offerly", default scopes only (no extra Google API scopes). While the screen is in "Testing" status, add your own Google account under **Test users** — otherwise sign-in is refused.
+2. **Credentials → Create OAuth client ID**, type "Web application". Authorized redirect URI: `https://<project-ref>.supabase.co/auth/v1/callback` — this is **Supabase's** callback, not the app's `/callback`.
+3. **Supabase dashboard** → Authentication → Providers → Google: enable, paste the client ID + secret.
+4. **Supabase dashboard** → Authentication → URL Configuration: add `http://localhost:3000/callback` (and your production `https://<domain>/callback` when deploying).
+5. **Fully local stack only** (`supabase start`): the Google provider is already declared in `supabase/config.toml`; export `SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID` / `SUPABASE_AUTH_EXTERNAL_GOOGLE_SECRET` (see `.env.example`) before starting.
 
 Alternative — fully local Supabase (requires Docker): `pnpm dlx supabase start` prints local URLs/keys; use those in both env files (`SUPABASE_URL=http://127.0.0.1:54321`) and run `pnpm dlx supabase db reset` to apply migrations.
 
@@ -109,3 +119,4 @@ pnpm build
 - **Analysis returns 422 `no_text_layer`** — the PDF is a scan; paste the text instead (by design).
 - **AI 503s** — bad `LLM_PROVIDER_API_KEY`/`LLM_BASE_URL`, or the provider account is out of quota (`provider rate/quota limit reached` = add credits or switch provider via `LLM_BASE_URL`, e.g. Groq's free tier `https://api.groq.com/openai/v1` with `LLM_MODEL=llama-3.3-70b-versatile`). Features degrade gracefully, other pages keep working.
 - **Upgrade doesn't unlock Pro** — webhook not forwarded (§4) or `STRIPE_WEBHOOK_SECRET` mismatch. Webhook without a valid signature returns 400 by design.
+- **Google button bounces back to `/login` with an error** — redirect URI mismatch (step 2 must be Supabase's `/auth/v1/callback`; step 4 must include your app's `/callback`), or the consent screen is still in Testing mode without your account added as a test user.

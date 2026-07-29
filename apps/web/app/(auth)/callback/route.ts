@@ -11,6 +11,12 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get("code");
   const next = searchParams.get("next") ?? "/dashboard";
 
+  // Provider-side failure (e.g. consent denied): Google redirects back with an
+  // `error` param — send the user to login with a visible message (specs/002, T1.2).
+  if (searchParams.get("error")) {
+    return NextResponse.redirect(`${origin}/login?error=auth`);
+  }
+
   if (code) {
     const cookieStore = await cookies();
     const supabase = createServerClient(
