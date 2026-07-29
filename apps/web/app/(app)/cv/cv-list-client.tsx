@@ -9,6 +9,7 @@ import { cvDisplayName, formatDate } from "@/lib/format";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
 import { Card, CardBody, CardHeader } from "@/components/card";
+import { CvPdfPreview } from "@/components/cv-pdf-preview";
 import { CvSelector } from "@/components/cv-selector";
 import { CvUploadForm } from "@/components/cv-upload-form";
 import { EmptyState } from "@/components/empty-state";
@@ -109,6 +110,9 @@ function CvCard({ cv, onChanged }: { cv: Cv; onChanged: () => void }) {
   return (
     <Card className="h-full transition-shadow hover:shadow-md">
       <CardBody className="flex flex-col gap-3">
+        {cv.file_path?.toLowerCase().endsWith(".pdf") && (
+          <CvPdfPreview filePath={cv.file_path} title={cvDisplayName(cv)} />
+        )}
         <div className="flex items-center justify-between gap-3">
           <div className="min-w-0 flex-1">
             {renaming ? (
