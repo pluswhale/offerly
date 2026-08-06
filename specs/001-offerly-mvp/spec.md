@@ -121,6 +121,8 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 
 ### 5.2 CV Analyzer
 
+> **Superseded in part by `specs/003-ai-pipeline-redesign/spec.md`:** analysis now runs on the extracted Candidate Profile (`cv-review.v2`), with per-field evidence and user corrections.
+
 **User problem:** Candidates get rejected without feedback and don't know what's wrong with their CV.
 
 **User story:** As a candidate, I want an honest, specific assessment of my CV with concrete improvements, so I can fix it instead of guessing.
@@ -153,6 +155,8 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 ---
 
 ### 5.3 Job Match
+
+> **Superseded in part by `specs/003-ai-pipeline-redesign/spec.md`:** the score is now a deterministic weighted report over per-requirement verdicts (MATCH/PARTIAL/UNKNOWN/MISSING) against a structured job profile, not a single LLM call.
 
 **User problem:** Candidates waste time applying to jobs where they're not competitive, or misjudge fit entirely.
 
@@ -239,6 +243,8 @@ Principles: minimal friction, collect only what's needed, progressive profiling,
 ---
 
 ### 5.6 AI Coach
+
+> **Superseded in part by `specs/003-ai-pipeline-redesign/spec.md`:** the coach (`coach.v2`) uses a budgeted context manifest built from the Candidate Profile and match summaries — raw CV text is no longer injected.
 
 **User problem:** Generic career advice doesn't account for the person's actual CV, goals, and pipeline; human coaching is unaffordable.
 

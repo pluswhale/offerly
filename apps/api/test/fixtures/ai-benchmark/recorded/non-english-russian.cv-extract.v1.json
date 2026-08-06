@@ -1,0 +1,69 @@
+{
+  "headline": {
+    "title": { "value": "Backend-разработчик", "status": "stated", "confidence": 0.9, "evidence": "Backend-разработчик, ООО «ДатаСофт» (май 2020 - настоящее время)" },
+    "seniority": { "value": "mid", "status": "stated", "confidence": 0.75, "evidence": "май 2020 - настоящее время" },
+    "total_years_experience": { "value": 6, "status": "stated", "confidence": 0.75, "evidence": "май 2020 - настоящее время" }
+  },
+  "roles": [
+    {
+      "title": { "value": "Backend-разработчик", "status": "stated", "confidence": 0.9, "evidence": "Backend-разработчик, ООО «ДатаСофт» (май 2020 - настоящее время)" },
+      "company": { "value": "ООО «ДатаСофт»", "status": "stated", "confidence": 0.9, "evidence": "ООО «ДатаСофт» (май 2020 - настоящее время)" },
+      "start": { "value": "май 2020", "status": "stated", "confidence": 0.9, "evidence": "май 2020 - настоящее время" },
+      "end": { "value": "настоящее время", "status": "stated", "confidence": 0.9, "evidence": "май 2020 - настоящее время" },
+      "industry": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "is_current": true
+    },
+    {
+      "title": { "value": "Системный аналитик", "status": "stated", "confidence": 0.9, "evidence": "Системный аналитик, АО «ИнфоЛайн» (июнь 2017 - апрель 2020)" },
+      "company": { "value": "АО «ИнфоЛайн»", "status": "stated", "confidence": 0.9, "evidence": "АО «ИнфоЛайн» (июнь 2017 - апрель 2020)" },
+      "start": { "value": "июнь 2017", "status": "stated", "confidence": 0.9, "evidence": "июнь 2017 - апрель 2020" },
+      "end": { "value": "апрель 2020", "status": "stated", "confidence": 0.9, "evidence": "июнь 2017 - апрель 2020" },
+      "industry": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "is_current": false
+    }
+  ],
+  "skills": {
+    "programming_languages": [
+      { "value": "Python", "status": "stated", "confidence": 0.9, "evidence": "Разрабатываю API на Python и Django", "years": null, "recency": "ООО «ДатаСофт»" }
+    ],
+    "frameworks": [
+      { "value": "Django", "status": "stated", "confidence": 0.9, "evidence": "Разрабатываю API на Python и Django", "years": null, "recency": "ООО «ДатаСофт»" }
+    ],
+    "cloud_platforms": [],
+    "databases": [
+      { "value": "PostgreSQL", "status": "stated", "confidence": 0.9, "evidence": "Работаю с PostgreSQL и Redis", "years": null, "recency": "ООО «ДатаСофт»" },
+      { "value": "Redis", "status": "stated", "confidence": 0.9, "evidence": "Работаю с PostgreSQL и Redis", "years": null, "recency": "ООО «ДатаСофт»" }
+    ],
+    "devops_tools": [],
+    "other_technologies": [],
+    "soft_skills": []
+  },
+  "experience": {
+    "industries": [],
+    "domains": [],
+    "team_sizes_managed": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "leadership": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "leadership_scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "management": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "management_scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null }
+  },
+  "education": [
+    {
+      "degree": { "value": "прикладная математика", "status": "stated", "confidence": 0.85, "evidence": "СПбГУ, прикладная математика, 2017" },
+      "institution": { "value": "СПбГУ", "status": "stated", "confidence": 0.9, "evidence": "СПбГУ, прикладная математика, 2017" },
+      "year": { "value": 2017, "status": "stated", "confidence": 0.9, "evidence": "СПбГУ, прикладная математика, 2017" }
+    }
+  ],
+  "certifications": [],
+  "languages": [
+    { "language": { "value": "Русский", "status": "stated", "confidence": 0.9, "evidence": "Русский (родной)" }, "level": { "value": "native", "status": "stated", "confidence": 0.9, "evidence": "Русский (родной)" } },
+    { "language": { "value": "Английский", "status": "stated", "confidence": 0.9, "evidence": "английский (свободно)" }, "level": { "value": "fluent", "status": "stated", "confidence": 0.8, "evidence": "английский (свободно)" } }
+  ],
+  "location": {
+    "current": { "value": "Санкт-Петербург, Россия", "status": "stated", "confidence": 0.9, "evidence": "Санкт-Петербург, Россия" },
+    "work_authorization": [],
+    "remote_preference": { "value": null, "status": "unknown", "confidence": 0, "evidence": null }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "description": "Keyword-stuffed CV: a giant skills block with no substantiating roles. The keywords ARE stated in the text, so they extract with evidence — but seniority, location, leadership and scope must stay UNKNOWN because the CV never says them.",
+  "stated": {
+    "headline.title": "IT Professional",
+    "headline.total_years_experience": 4,
+    "skills.programming_languages": ["JavaScript", "TypeScript", "Python", "Java", "C#", "Go", "Rust", "Ruby", "PHP", "Swift", "Kotlin"],
+    "skills.frameworks": ["React", "Angular", "Vue", "Express", "Django", "Flask", "Spring", "Laravel"],
+    "skills.other_technologies": ["Node.js", "GraphQL", "REST", "microservices", "Elasticsearch"],
+    "skills.cloud_platforms": ["AWS", "Azure", "GCP"],
+    "skills.devops_tools": ["Docker", "Kubernetes", "Terraform", "Jenkins"],
+    "skills.databases": ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
+    "skills.soft_skills": ["Agile", "Scrum", "team player", "results-driven", "detail-oriented"]
+  },
+  "unknown": [
+    "headline.seniority",
+    "experience.leadership",
+    "experience.management",
+    "experience.team_sizes_managed",
+    "location.current",
+    "location.remote_preference",
+    "location.work_authorization",
+    "languages",
+    "certifications"
+  ]
+}

@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Patch } from "@nestjs/common";
-import type { Profile, SalaryExpectation, UpdateProfileRequest } from "@offerly/types";
+import type { Profile, SalaryExpectation, UpdateProfileRequest, UserGoals } from "@offerly/types";
 import { Type } from "class-transformer";
 import {
   IsBoolean,
@@ -21,6 +21,21 @@ class SalaryExpectationDto implements SalaryExpectation {
 
   @IsIn(["year", "month", "hour"])
   period!: "year" | "month" | "hour";
+}
+
+class UserGoalsDto implements Partial<UserGoals> {
+  @IsOptional()
+  @IsString()
+  target_location?: string | null;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => SalaryExpectationDto)
+  target_salary?: SalaryExpectation | null;
+
+  @IsOptional()
+  @IsString()
+  priority?: string | null;
 }
 
 class UpdateProfileDto implements UpdateProfileRequest {
@@ -52,6 +67,11 @@ class UpdateProfileDto implements UpdateProfileRequest {
   @ValidateNested()
   @Type(() => SalaryExpectationDto)
   salary_expectation?: SalaryExpectation;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => UserGoalsDto)
+  user_goals?: Partial<UserGoals>;
 
   @IsOptional()
   @IsBoolean()

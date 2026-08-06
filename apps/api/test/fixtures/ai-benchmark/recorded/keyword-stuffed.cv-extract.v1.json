@@ -1,0 +1,472 @@
+{
+  "headline": {
+    "title": {
+      "value": "IT Professional",
+      "status": "stated",
+      "confidence": 0.85,
+      "evidence": "IT Professional"
+    },
+    "seniority": {
+      "value": null,
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": null
+    },
+    "total_years_experience": {
+      "value": 4,
+      "status": "stated",
+      "confidence": 0.8,
+      "evidence": "2019 - 2023"
+    }
+  },
+  "roles": [
+    {
+      "title": {
+        "value": "Consultant",
+        "status": "stated",
+        "confidence": 0.85,
+        "evidence": "Consultant, various clients (2019 - 2023)"
+      },
+      "company": {
+        "value": "various clients",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Consultant, various clients (2019 - 2023)"
+      },
+      "start": {
+        "value": "2019",
+        "status": "stated",
+        "confidence": 0.9,
+        "evidence": "2019 - 2023"
+      },
+      "end": {
+        "value": "2023",
+        "status": "stated",
+        "confidence": 0.9,
+        "evidence": "2019 - 2023"
+      },
+      "industry": {
+        "value": null,
+        "status": "unknown",
+        "confidence": 0,
+        "evidence": null
+      },
+      "scope": {
+        "value": null,
+        "status": "unknown",
+        "confidence": 0,
+        "evidence": null
+      },
+      "is_current": false
+    }
+  ],
+  "skills": {
+    "programming_languages": [
+      {
+        "value": "JavaScript",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "JavaScript",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "TypeScript",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "TypeScript",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Python",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Python",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Java",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Java",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "C#",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "C#",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Go",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Go",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Rust",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Rust",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Ruby",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Ruby",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "PHP",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "PHP",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Swift",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Swift",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Kotlin",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Kotlin",
+        "years": null,
+        "recency": null
+      }
+    ],
+    "frameworks": [
+      {
+        "value": "React",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "React",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Angular",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Angular",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Vue",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Vue",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Express",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Express",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Django",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Django",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Flask",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Flask",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Spring",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Spring",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Laravel",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Laravel",
+        "years": null,
+        "recency": null
+      }
+    ],
+    "other_technologies": [
+      {
+        "value": "Node.js",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Node.js",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "GraphQL",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "GraphQL",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "REST",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "REST",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "microservices",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "microservices",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Elasticsearch",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Elasticsearch",
+        "years": null,
+        "recency": null
+      }
+    ],
+    "cloud_platforms": [
+      {
+        "value": "AWS",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "AWS",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Azure",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Azure",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "GCP",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "GCP",
+        "years": null,
+        "recency": null
+      }
+    ],
+    "devops_tools": [
+      {
+        "value": "Docker",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Docker",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Kubernetes",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Kubernetes",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Terraform",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Terraform",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Jenkins",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Jenkins",
+        "years": null,
+        "recency": null
+      }
+    ],
+    "databases": [
+      {
+        "value": "PostgreSQL",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "PostgreSQL",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "MySQL",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "MySQL",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "MongoDB",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "MongoDB",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Redis",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Redis",
+        "years": null,
+        "recency": null
+      }
+    ],
+    "soft_skills": [
+      {
+        "value": "Agile",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Agile",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "Scrum",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "Scrum",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "team player",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "team player",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "results-driven",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "results-driven",
+        "years": null,
+        "recency": null
+      },
+      {
+        "value": "detail-oriented",
+        "status": "stated",
+        "confidence": 0.8,
+        "evidence": "detail-oriented",
+        "years": null,
+        "recency": null
+      }
+    ]
+  },
+  "experience": {
+    "industries": [],
+    "domains": [],
+    "team_sizes_managed": {
+      "value": null,
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": null
+    },
+    "leadership": {
+      "value": null,
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": null
+    },
+    "leadership_scope": {
+      "value": null,
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": null
+    },
+    "management": {
+      "value": null,
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": null
+    },
+    "management_scope": {
+      "value": null,
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": null
+    }
+  },
+  "education": [
+    {
+      "degree": {
+        "value": "BSc Information Technology",
+        "status": "stated",
+        "confidence": 0.9,
+        "evidence": "BSc Information Technology, State University, 2018"
+      },
+      "institution": {
+        "value": "State University",
+        "status": "stated",
+        "confidence": 0.9,
+        "evidence": "BSc Information Technology, State University, 2018"
+      },
+      "year": {
+        "value": 2018,
+        "status": "stated",
+        "confidence": 0.9,
+        "evidence": "BSc Information Technology, State University, 2018"
+      }
+    }
+  ],
+  "certifications": [],
+  "languages": [],
+  "location": {
+    "current": {
+      "value": null,
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": null
+    },
+    "work_authorization": [],
+    "remote_preference": {
+      "value": null,
+      "status": "unknown",
+      "confidence": 0,
+      "evidence": null
+    }
+  }
+}

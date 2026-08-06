@@ -5,6 +5,16 @@ export function normalizeForCache(input: string): string {
   return input.toLowerCase().replace(/\s+/g, " ").trim();
 }
 
+/**
+ * Evidence-match normalization (spec 003 §FR-1 S2): Unicode NFC + lowercase +
+ * whitespace collapse + trim. Same idea as normalizeForCache but NFC-folded so
+ * verbatim quotes match regardless of the PDF extractor's Unicode composition.
+ * Deliberately separate — cache keys must stay stable.
+ */
+export function normalizeForMatch(input: string): string {
+  return input.normalize("NFC").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
 export function sha256Hex(input: string): string {
   return createHash("sha256").update(input, "utf8").digest("hex");
 }

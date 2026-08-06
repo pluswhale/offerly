@@ -1,0 +1,18 @@
+Senior Backend Engineer (Payments)
+FinLane GmbH — Berlin, Germany (hybrid, 3 days per week in the office)
+
+FinLane builds payment processing infrastructure for European online retailers.
+We are looking for a senior backend engineer to own core transaction services.
+
+Requirements:
+- 5+ years of backend development experience
+- Strong TypeScript and Node.js skills
+- Production experience with PostgreSQL and Redis
+- Hands-on AWS experience (ECS, RDS)
+- Docker-based deployments and CI/CD pipelines
+- Fluent English (C1)
+
+Nice to have:
+- Experience in fintech or payments
+- Kubernetes
+- German language skills

@@ -1,4 +1,4 @@
-import type { SalaryExpectation, SubscriptionPlan } from "./db.js";
+import type { CandidateProfileStatus, SalaryExpectation, SubscriptionPlan, UserGoals } from "./db.js";
 
 /** Health check response (GET /health). */
 export interface HealthResponse {
@@ -14,6 +14,12 @@ export interface UpdateProfileRequest {
   location?: string;
   visa_status?: string;
   salary_expectation?: SalaryExpectation;
+  /**
+   * Progressive-profiling goals (spec 003 §FR-11, T4.4). Partial merge
+   * server-side: only keys present here are written, unset keys keep their
+   * stored values; an explicit null clears a key.
+   */
+  user_goals?: Partial<UserGoals>;
   onboarding_completed?: boolean;
 }
 
@@ -64,4 +70,25 @@ export interface SendCoachMessageRequest {
 /** POST /jobs/:id/apply — optional regeneration instruction. */
 export interface GenerateApplicationRequest {
   instruction?: string;
+}
+
+/**
+ * POST /cvs/:id/profile — 202 Accepted body (spec 003 §FR-3). The pipeline
+ * runs async; the client polls GET /cvs/:id/profile until ready|failed.
+ * On idempotent reuse the endpoint returns 200 with the CandidateProfileRow.
+ */
+export interface RunCandidateProfileResponse {
+  profile_id: string;
+  status: CandidateProfileStatus;
+}
+
+/**
+ * PATCH /cvs/:id/profile — user correction of one profile field (spec 003
+ * §FR-4). `path` uses the verifier's notation ("skills.databases[0]",
+ * "headline.total_years_experience"); the stored leaf becomes
+ * {value, status:'stated', confidence:1, evidence:null, source:'user'}.
+ */
+export interface UpdateCandidateProfileRequest {
+  path: string;
+  value: unknown;
 }

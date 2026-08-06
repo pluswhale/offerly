@@ -1,0 +1,16 @@
+{
+  "description": "Senior multi-role CV (Kotlin/Java/Go, payments, 13y) vs fintech senior backend JD. Pre-pass resolves most must-haves; the LLM pass covers TypeScript/Node silence (unknown — never missing from silence), Docker/CI/CD phrasing (partial: deployments evidenced, CI/CD practice not explicit), and the fintech↔payments semantic equivalence (match).",
+  "cv": "senior-multirole",
+  "jd": "senior-backend-fintech",
+  "expected_verdicts": {
+    "req-1": "match",
+    "req-2": "unknown",
+    "req-3": "match",
+    "req-4": "match",
+    "req-5": "partial",
+    "req-6": "match",
+    "req-7": "match",
+    "req-8": "match",
+    "req-9": "match"
+  }
+}

@@ -1,0 +1,17 @@
+Mila Novak
+Junior Frontend Developer
+Warsaw, Poland
+
+EXPERIENCE
+Junior Frontend Developer, BrightApps (Jan 2025 - present)
+- Build landing pages in JavaScript and React
+- Fix CSS layout bugs reported by the design team
+
+Frontend Intern, BrightApps (Mar 2024 - Dec 2024)
+- Helped migrate HTML templates to React components
+
+EDUCATION
+BSc Computer Science, University of Warsaw, 2024
+
+LANGUAGES
+Polish (native), English (professional)

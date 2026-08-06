@@ -1,0 +1,100 @@
+{
+  "headline": {
+    "title": { "value": "Lead Backend Engineer", "status": "stated", "confidence": 0.9, "evidence": "Lead Backend Engineer, PayFlow GmbH (Apr 2021 - present)" },
+    "seniority": { "value": "lead", "status": "stated", "confidence": 0.85, "evidence": "Lead Backend Engineer, PayFlow GmbH (Apr 2021 - present)" },
+    "total_years_experience": { "value": 13, "status": "stated", "confidence": 0.8, "evidence": "Feb 2013 - May 2017" }
+  },
+  "roles": [
+    {
+      "title": { "value": "Lead Backend Engineer", "status": "stated", "confidence": 0.9, "evidence": "Lead Backend Engineer, PayFlow GmbH (Apr 2021 - present)" },
+      "company": { "value": "PayFlow GmbH", "status": "stated", "confidence": 0.9, "evidence": "PayFlow GmbH (Apr 2021 - present)" },
+      "start": { "value": "Apr 2021", "status": "stated", "confidence": 0.9, "evidence": "Apr 2021 - present" },
+      "end": { "value": "present", "status": "stated", "confidence": 0.9, "evidence": "Apr 2021 - present" },
+      "industry": { "value": "payments", "status": "stated", "confidence": 0.8, "evidence": "building payment APIs in Kotlin and Spring Boot" },
+      "scope": { "value": "team of 6 engineers", "status": "stated", "confidence": 0.9, "evidence": "Lead a team of 6 engineers building payment APIs" },
+      "is_current": true
+    },
+    {
+      "title": { "value": "Senior Backend Engineer", "status": "stated", "confidence": 0.9, "evidence": "Senior Backend Engineer, LogiStack AG (Jun 2017 - Mar 2021)" },
+      "company": { "value": "LogiStack AG", "status": "stated", "confidence": 0.9, "evidence": "LogiStack AG (Jun 2017 - Mar 2021)" },
+      "start": { "value": "Jun 2017", "status": "stated", "confidence": 0.9, "evidence": "Jun 2017 - Mar 2021" },
+      "end": { "value": "Mar 2021", "status": "stated", "confidence": 0.9, "evidence": "Jun 2017 - Mar 2021" },
+      "industry": { "value": "logistics", "status": "stated", "confidence": 0.75, "evidence": "Built route-planning microservices in Java and Go" },
+      "scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "is_current": false
+    },
+    {
+      "title": { "value": "Backend Developer", "status": "stated", "confidence": 0.9, "evidence": "Backend Developer, WebWerk GmbH (Feb 2013 - May 2017)" },
+      "company": { "value": "WebWerk GmbH", "status": "stated", "confidence": 0.9, "evidence": "WebWerk GmbH (Feb 2013 - May 2017)" },
+      "start": { "value": "Feb 2013", "status": "stated", "confidence": 0.9, "evidence": "Feb 2013 - May 2017" },
+      "end": { "value": "May 2017", "status": "stated", "confidence": 0.9, "evidence": "Feb 2013 - May 2017" },
+      "industry": { "value": "e-commerce", "status": "stated", "confidence": 0.85, "evidence": "Developed e-commerce backends in PHP and MySQL" },
+      "scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "is_current": false
+    }
+  ],
+  "skills": {
+    "programming_languages": [
+      { "value": "Kotlin", "status": "stated", "confidence": 0.9, "evidence": "building payment APIs in Kotlin and Spring Boot", "years": null, "recency": "PayFlow GmbH" },
+      { "value": "Java", "status": "stated", "confidence": 0.9, "evidence": "Built route-planning microservices in Java and Go", "years": null, "recency": "LogiStack AG" },
+      { "value": "Go", "status": "stated", "confidence": 0.9, "evidence": "Built route-planning microservices in Java and Go", "years": null, "recency": "LogiStack AG" },
+      { "value": "PHP", "status": "stated", "confidence": 0.9, "evidence": "Developed e-commerce backends in PHP and MySQL", "years": null, "recency": "WebWerk GmbH" }
+    ],
+    "frameworks": [
+      { "value": "Spring Boot", "status": "stated", "confidence": 0.9, "evidence": "building payment APIs in Kotlin and Spring Boot", "years": null, "recency": "PayFlow GmbH" }
+    ],
+    "cloud_platforms": [
+      { "value": "AWS", "status": "stated", "confidence": 0.9, "evidence": "Migrated PostgreSQL clusters to AWS RDS with zero downtime", "years": null, "recency": "PayFlow GmbH" }
+    ],
+    "databases": [
+      { "value": "PostgreSQL", "status": "stated", "confidence": 0.9, "evidence": "Migrated PostgreSQL clusters to AWS RDS with zero downtime", "years": null, "recency": "PayFlow GmbH" },
+      { "value": "MySQL", "status": "stated", "confidence": 0.9, "evidence": "Developed e-commerce backends in PHP and MySQL", "years": null, "recency": "WebWerk GmbH" },
+      { "value": "Redis", "status": "stated", "confidence": 0.9, "evidence": "Owned Redis caching layer and RabbitMQ messaging", "years": null, "recency": "LogiStack AG" }
+    ],
+    "devops_tools": [
+      { "value": "Kubernetes", "status": "stated", "confidence": 0.9, "evidence": "Introduced Kubernetes-based deployments with Docker and Terraform", "years": null, "recency": "PayFlow GmbH" },
+      { "value": "Docker", "status": "stated", "confidence": 0.9, "evidence": "Introduced Kubernetes-based deployments with Docker and Terraform", "years": null, "recency": "PayFlow GmbH" },
+      { "value": "Terraform", "status": "stated", "confidence": 0.9, "evidence": "Introduced Kubernetes-based deployments with Docker and Terraform", "years": null, "recency": "PayFlow GmbH" }
+    ],
+    "other_technologies": [
+      { "value": "RabbitMQ", "status": "stated", "confidence": 0.85, "evidence": "Owned Redis caching layer and RabbitMQ messaging", "years": null, "recency": "LogiStack AG" }
+    ],
+    "soft_skills": []
+  },
+  "experience": {
+    "industries": [
+      { "value": "payments", "status": "stated", "confidence": 0.8, "evidence": "building payment APIs in Kotlin and Spring Boot" },
+      { "value": "logistics", "status": "stated", "confidence": 0.75, "evidence": "Built route-planning microservices in Java and Go" },
+      { "value": "e-commerce", "status": "stated", "confidence": 0.85, "evidence": "Developed e-commerce backends in PHP and MySQL" }
+    ],
+    "domains": [],
+    "team_sizes_managed": { "value": 6, "status": "stated", "confidence": 0.9, "evidence": "Lead a team of 6 engineers building payment APIs" },
+    "leadership": { "value": true, "status": "stated", "confidence": 0.9, "evidence": "Lead a team of 6 engineers building payment APIs" },
+    "leadership_scope": { "value": "team of 6 engineers", "status": "stated", "confidence": 0.9, "evidence": "Lead a team of 6 engineers building payment APIs" },
+    "management": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "management_scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null }
+  },
+  "education": [
+    {
+      "degree": { "value": "MSc Computer Science", "status": "stated", "confidence": 0.9, "evidence": "MSc Computer Science, TU Munich, 2012" },
+      "institution": { "value": "TU Munich", "status": "stated", "confidence": 0.9, "evidence": "MSc Computer Science, TU Munich, 2012" },
+      "year": { "value": 2012, "status": "stated", "confidence": 0.9, "evidence": "MSc Computer Science, TU Munich, 2012" }
+    }
+  ],
+  "certifications": [
+    {
+      "name": { "value": "AWS Certified Solutions Architect - Associate", "status": "stated", "confidence": 0.9, "evidence": "AWS Certified Solutions Architect - Associate, Amazon Web Services, 2022" },
+      "issuer": { "value": "Amazon Web Services", "status": "stated", "confidence": 0.9, "evidence": "AWS Certified Solutions Architect - Associate, Amazon Web Services, 2022" },
+      "year": { "value": 2022, "status": "stated", "confidence": 0.9, "evidence": "AWS Certified Solutions Architect - Associate, Amazon Web Services, 2022" }
+    }
+  ],
+  "languages": [
+    { "language": { "value": "German", "status": "stated", "confidence": 0.9, "evidence": "German (native)" }, "level": { "value": "native", "status": "stated", "confidence": 0.9, "evidence": "German (native)" } },
+    { "language": { "value": "English", "status": "stated", "confidence": 0.9, "evidence": "English (fluent)" }, "level": { "value": "fluent", "status": "stated", "confidence": 0.9, "evidence": "English (fluent)" } }
+  ],
+  "location": {
+    "current": { "value": "Munich, Germany", "status": "stated", "confidence": 0.9, "evidence": "Munich, Germany" },
+    "work_authorization": [],
+    "remote_preference": { "value": null, "status": "unknown", "confidence": 0, "evidence": null }
+  }
+}

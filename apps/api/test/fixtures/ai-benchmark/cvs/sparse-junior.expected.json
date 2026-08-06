@@ -1,0 +1,25 @@
+{
+  "description": "Sparse junior CV: two short roles at one company, no databases/cloud/devops anywhere — those groups and the leadership/management fields must stay UNKNOWN (spec AC-2).",
+  "stated": {
+    "headline.title": "Junior Frontend Developer",
+    "headline.seniority": "junior",
+    "headline.total_years_experience": 1,
+    "skills.programming_languages": ["JavaScript"],
+    "skills.frameworks": ["React"],
+    "skills.other_technologies": ["HTML", "CSS"],
+    "languages": ["Polish", "English"],
+    "location.current": "Warsaw, Poland"
+  },
+  "unknown": [
+    "skills.databases",
+    "skills.cloud_platforms",
+    "skills.devops_tools",
+    "skills.soft_skills",
+    "experience.leadership",
+    "experience.management",
+    "experience.team_sizes_managed",
+    "location.remote_preference",
+    "location.work_authorization",
+    "certifications"
+  ]
+}

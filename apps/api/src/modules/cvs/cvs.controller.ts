@@ -11,7 +11,7 @@ import {
   UnprocessableEntityException,
   UseGuards,
 } from "@nestjs/common";
-import { PLAN_LIMITS, type Cv, type CvAnalysis } from "@offerly/types";
+import type { Cv } from "@offerly/types";
 import {
   IsBoolean,
   IsInt,
@@ -25,7 +25,6 @@ import {
 } from "class-validator";
 import { AccessToken, UserId } from "../auth/current-user.decorator.js";
 import { EntitlementGuard } from "../entitlements/entitlement.guard.js";
-import { EntitlementsService } from "../entitlements/entitlements.service.js";
 import { Requires } from "../entitlements/requires.decorator.js";
 import { CvsService, type SignedUpload } from "./cvs.service.js";
 
@@ -77,10 +76,7 @@ class UpdateCvDto {
 
 @Controller("cvs")
 export class CvsController {
-  constructor(
-    private readonly cvs: CvsService,
-    private readonly entitlements: EntitlementsService,
-  ) {}
+  constructor(private readonly cvs: CvsService) {}
 
   @Post()
   @UseGuards(EntitlementGuard)
@@ -139,26 +135,5 @@ export class CvsController {
     @Param("id", ParseUUIDPipe) id: string,
   ): Promise<void> {
     await this.cvs.remove(userId, token, id);
-  }
-
-  @Post(":id/analyze")
-  @UseGuards(EntitlementGuard)
-  @Requires("cv_analysis")
-  async analyze(
-    @UserId() userId: string,
-    @AccessToken() token: string,
-    @Param("id", ParseUUIDPipe) id: string,
-  ): Promise<CvAnalysis> {
-    const plan = await this.entitlements.getPlan(userId, token);
-    return this.cvs.analyze(userId, token, id, PLAN_LIMITS[plan].matchDepth);
-  }
-
-  @Get(":id/analyses")
-  listAnalyses(
-    @UserId() userId: string,
-    @AccessToken() token: string,
-    @Param("id", ParseUUIDPipe) id: string,
-  ): Promise<CvAnalysis[]> {
-    return this.cvs.listAnalyses(userId, token, id);
   }
 }

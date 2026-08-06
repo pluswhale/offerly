@@ -34,25 +34,3 @@ export function buildCoachSystemPrompt(ctx: CoachContext): string {
     (ctx.cvText ? `\n${dataBlock("cv_text", ctx.cvText)}` : "\n(No CV uploaded yet — suggest uploading one before giving CV-specific advice.)")
   );
 }
-
-export const compactTemplateVersion = "conversation-compact.v1";
-
-/** Summarize older chat turns into one system-summary message (T9.1). */
-export function buildCompactionMessages(turnsText: string): {
-  templateVersion: string;
-  messages: { role: "system" | "user"; content: string }[];
-} {
-  return {
-    templateVersion: compactTemplateVersion,
-    messages: [
-      {
-        role: "system",
-        content:
-          "Summarize this career-coaching conversation excerpt into at most 6 bullet points " +
-          "capturing the user's situation, decisions made, and advice given. Plain text bullets only. " +
-          UNTRUSTED_DATA_RULE,
-      },
-      { role: "user", content: dataBlock("conversation", turnsText) },
-    ],
-  };
-}

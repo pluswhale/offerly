@@ -10,6 +10,7 @@ import type { CoachConversation } from "@/lib/contract";
 import { Button } from "@/components/button";
 import { Card, CardBody } from "@/components/card";
 import { CvSelector } from "@/components/cv-selector";
+import { GoalPrompt } from "@/components/goal-prompt";
 import { ProgressiveProfilePrompt } from "@/components/progressive-profile-prompt";
 import { Skeleton } from "@/components/skeleton";
 import { UpgradeButton } from "@/components/upgrade-button";
@@ -30,7 +31,9 @@ export function CoachClient() {
   const { data: usage, loading: usageLoading } = useApi<UsageSummary>(() =>
     api<UsageSummary>("/usage/me"),
   );
-  const { data: profile } = useApi<Profile>(() => api<Profile>("/profiles/me"));
+  const { data: profile, refetch: refetchProfile } = useApi<Profile>(() =>
+    api<Profile>("/profiles/me"),
+  );
 
   const [conversation, setConversation] = useState<CoachConversation | null>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -168,6 +171,13 @@ export function CoachClient() {
         profile={profile}
         field="experience_level"
         reason="The coach calibrates its advice to your seniority."
+      />
+
+      {/* T4.4: one missing user_goals field, asked inline — never blocking. */}
+      <GoalPrompt
+        profile={profile}
+        fields={["priority", "target_location", "target_salary"]}
+        onSaved={() => refetchProfile()}
       />
 
       {/* Suggestion chips deep-link into features (T9.2) */}

@@ -1,0 +1,11 @@
+{
+  "description": "Vague JD with zero concrete requirements: everything structured must come out empty/UNKNOWN rather than inferred from buzzwords (drives the zero-requirement verdict pairs in pairs/).",
+  "expected": {
+    "required_skills": [],
+    "preferred_skills": [],
+    "min_years_experience": null,
+    "remote_policy": "unknown",
+    "languages": [],
+    "industry": null
+  }
+}

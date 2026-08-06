@@ -1,6 +1,5 @@
 import { UnprocessableEntityException } from "@nestjs/common";
 import { describe, expect, it } from "vitest";
-import { AiService } from "../src/modules/ai/ai.service.js";
 import { CvsService } from "../src/modules/cvs/cvs.service.js";
 import { SupabaseService } from "../src/modules/supabase/supabase.service.js";
 import { FakeSupabaseClient, type Terminal } from "./helpers/fake-supabase.js";
@@ -15,8 +14,7 @@ function makeService(cvsTerminals: Terminal[]): {
   const client = new FakeSupabaseClient();
   client.queue("cvs", cvsTerminals);
   const supabase = { forUser: () => client } as unknown as SupabaseService;
-  const ai = {} as AiService;
-  return { service: new CvsService(supabase, ai), client };
+  return { service: new CvsService(supabase), client };
 }
 
 describe("CvsService multi-CV (T12.1)", () => {

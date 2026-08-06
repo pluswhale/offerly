@@ -1,0 +1,16 @@
+{
+  "description": "Sparse junior CV (JavaScript/React, 1y, EN professional + PL native) vs fintech senior backend JD. Exercises spec AC-2: skills/databases/cloud the CV never mentions stay UNKNOWN, never MISSING; positive counter-evidence cases (1y vs 5y, EN professional vs C1, German absent from stated languages) are MISSING.",
+  "cv": "sparse-junior",
+  "jd": "senior-backend-fintech",
+  "expected_verdicts": {
+    "req-1": "missing",
+    "req-2": "unknown",
+    "req-3": "unknown",
+    "req-4": "unknown",
+    "req-5": "unknown",
+    "req-6": "missing",
+    "req-7": "unknown",
+    "req-8": "unknown",
+    "req-9": "missing"
+  }
+}

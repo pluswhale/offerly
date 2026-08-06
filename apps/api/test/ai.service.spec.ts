@@ -3,15 +3,16 @@ import { describe, expect, it, vi } from "vitest";
 import { AiService } from "../src/modules/ai/ai.service.js";
 import { LlmProviderError, type LlmProvider } from "../src/modules/ai/llm-provider.js";
 import {
-  buildCvAnalysisPrompt,
-  parseCvAnalysisResult,
-} from "../src/modules/ai/prompts/cv-analysis.v1.js";
+  buildApplyPrompt,
+  parseApplyResult,
+} from "../src/modules/ai/prompts/apply-generate.v1.js";
 import { SupabaseService } from "../src/modules/supabase/supabase.service.js";
 
-const VALID_ANALYSIS = {
-  score: 72,
-  sections: [{ name: "Experience", score: 80, feedback: "Solid" }],
-  improvements: ["Add metrics"],
+const VALID_RESULT = {
+  cover_letter: "Dear Acme, …",
+  answers: [{ question: "Why us?", answer: "Because…" }],
+  recommendations: ["Add metrics"],
+  gaps_flagged: [],
 };
 
 function makeProvider(responses: Array<string | Error>): LlmProvider {
@@ -62,24 +63,29 @@ function makeSupabase() {
   return { supabase, cache, usage };
 }
 
-const PROMPT = buildCvAnalysisPrompt({ cvText: "John Doe, engineer...", depth: "basic" });
+const PROMPT = buildApplyPrompt({
+  cvText: "John Doe, engineer...",
+  jdText: "Senior engineer role...",
+  title: "Engineer",
+  company: null,
+});
 const OPTS = {
   userId: "user-1",
-  operation: "cv_analysis" as const,
+  operation: "apply_generate" as const,
   prompt: PROMPT,
   maxTokens: 1500,
-  parse: parseCvAnalysisResult,
+  parse: parseApplyResult,
 };
 
 describe("AiService cache behavior (T5.2)", () => {
   it("miss → provider call + usage row; identical repeat → cache hit, no provider call, cache_hit logged", async () => {
-    const provider = makeProvider([JSON.stringify(VALID_ANALYSIS)]);
+    const provider = makeProvider([JSON.stringify(VALID_RESULT)]);
     const { supabase, usage } = makeSupabase();
     const ai = new AiService(supabase, provider);
 
     const first = await ai.generateJson(OPTS);
     expect(first.cacheHit).toBe(false);
-    expect(first.data.score).toBe(72);
+    expect(first.data.cover_letter).toBe("Dear Acme, …");
     expect(provider.complete).toHaveBeenCalledTimes(1);
     expect(first.tokensIn).toBe(100);
 
@@ -95,24 +101,29 @@ describe("AiService cache behavior (T5.2)", () => {
   });
 
   it("whitespace/case differences in input still hit the same cache key", async () => {
-    const provider = makeProvider([JSON.stringify(VALID_ANALYSIS)]);
+    const provider = makeProvider([JSON.stringify(VALID_RESULT)]);
     const { supabase } = makeSupabase();
     const ai = new AiService(supabase, provider);
 
     await ai.generateJson(OPTS);
-    const messy = buildCvAnalysisPrompt({ cvText: "john   DOE,\n\nengineer...", depth: "basic" });
+    const messy = buildApplyPrompt({
+      cvText: "john   DOE,\n\nengineer...",
+      jdText: "Senior engineer role...",
+      title: "Engineer",
+      company: null,
+    });
     const second = await ai.generateJson({ ...OPTS, prompt: messy });
     expect(second.cacheHit).toBe(true);
     expect(provider.complete).toHaveBeenCalledTimes(1);
   });
 
   it("retries once on parse failure, then succeeds", async () => {
-    const provider = makeProvider(["not json at all", JSON.stringify(VALID_ANALYSIS)]);
+    const provider = makeProvider(["not json at all", JSON.stringify(VALID_RESULT)]);
     const { supabase } = makeSupabase();
     const ai = new AiService(supabase, provider);
 
     const result = await ai.generateJson(OPTS);
-    expect(result.data.score).toBe(72);
+    expect(result.data.cover_letter).toBe("Dear Acme, …");
     expect(provider.complete).toHaveBeenCalledTimes(2);
     // The retry includes the repair instruction.
     const secondCall = vi.mocked(provider.complete).mock.calls[1]?.[0];
@@ -129,12 +140,12 @@ describe("AiService cache behavior (T5.2)", () => {
   });
 
   it("extracts JSON from code fences", async () => {
-    const provider = makeProvider(["```json\n" + JSON.stringify(VALID_ANALYSIS) + "\n```"]);
+    const provider = makeProvider(["```json\n" + JSON.stringify(VALID_RESULT) + "\n```"]);
     const { supabase } = makeSupabase();
     const ai = new AiService(supabase, provider);
 
     const result = await ai.generateJson(OPTS);
-    expect(result.data.score).toBe(72);
+    expect(result.data.cover_letter).toBe("Dear Acme, …");
   });
 
   it("provider failure degrades to 503, not a crash", async () => {
@@ -151,7 +162,7 @@ describe("AiService cache behavior (T5.2)", () => {
       const provider = makeProvider([
         new LlmProviderError("rate limited", 429),
         new LlmProviderError("rate limited", 429),
-        JSON.stringify(VALID_ANALYSIS),
+        JSON.stringify(VALID_RESULT),
       ]);
       const { supabase } = makeSupabase();
       const ai = new AiService(supabase, provider);
@@ -159,7 +170,7 @@ describe("AiService cache behavior (T5.2)", () => {
       const pending = ai.generateJson(OPTS);
       await vi.runAllTimersAsync();
       const result = await pending;
-      expect(result.data.score).toBe(72);
+      expect(result.data.cover_letter).toBe("Dear Acme, …");
       expect(provider.complete).toHaveBeenCalledTimes(3);
     } finally {
       vi.useRealTimers();

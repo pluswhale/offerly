@@ -9,7 +9,9 @@ import type { CvAnalysisWithResult, UpgradeRequiredPayload } from "@/lib/contrac
 import { cvDisplayName, formatDate } from "@/lib/format";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
+import { CandidateProfileSection } from "@/components/candidate-profile-section";
 import { Card, CardBody, CardHeader } from "@/components/card";
+import { CvImprovementsSection } from "@/components/cv-improvements-section";
 import { EmptyState } from "@/components/empty-state";
 import { PaywallModal } from "@/components/paywall-modal";
 import { ScoreRing } from "@/components/score-ring";
@@ -192,6 +194,12 @@ export function CvDetailClient({ cvId }: { cvId: string }) {
           </Card>
         </>
       ) : null}
+
+      {/* Candidate Profile (spec 003 T2.7) — independent of the v1 analysis above. */}
+      <CandidateProfileSection cvId={cvId} />
+
+      {/* Improve my CV (spec 003 T5.3) — sentence/bullet rewrites with accept/reject. */}
+      <CvImprovementsSection cvId={cvId} />
 
       <PaywallModal
         open={paywall !== null}

@@ -50,6 +50,9 @@ importers:
       stripe:
         specifier: 22.3.2
         version: 22.3.2(@types/node@26.1.2)
+      zod:
+        specifier: ^4.4.3
+        version: 4.4.3
     devDependencies:
       '@nestjs/cli':
         specifier: 11.0.24

@@ -1,0 +1,25 @@
+{
+  "verdicts": [
+    {
+      "requirement_id": "req-2",
+      "verdict": "unknown",
+      "confidence": 0.8,
+      "candidate_evidence": [],
+      "reasoning": "The profile lists Kotlin, Java, Go and PHP but is silent on TypeScript and Node.js — the CV does not mention them, so absence is not claimed."
+    },
+    {
+      "requirement_id": "req-5",
+      "verdict": "partial",
+      "confidence": 0.7,
+      "candidate_evidence": ["skills.devops_tools[1]", "skills.devops_tools[0]"],
+      "reasoning": "The profile evidences Docker-based deployments and Kubernetes orchestration (skills.devops_tools[1], skills.devops_tools[0]), covering containerized deployments, but CI/CD pipeline practice itself is not explicitly evidenced."
+    },
+    {
+      "requirement_id": "req-7",
+      "verdict": "match",
+      "confidence": 0.85,
+      "candidate_evidence": ["experience.industries[0]"],
+      "reasoning": "The profile states payments industry experience (experience.industries[0]), which is the fintech/payments space the requirement names."
+    }
+  ]
+}

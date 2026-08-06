@@ -1,0 +1,28 @@
+Daniel Richter
+Lead Backend Engineer
+Munich, Germany
+
+SUMMARY
+Backend engineer with over a decade of experience building payment and logistics systems.
+
+EXPERIENCE
+Lead Backend Engineer, PayFlow GmbH (Apr 2021 - present)
+- Lead a team of 6 engineers building payment APIs in Kotlin and Spring Boot
+- Migrated PostgreSQL clusters to AWS RDS with zero downtime
+- Introduced Kubernetes-based deployments with Docker and Terraform
+
+Senior Backend Engineer, LogiStack AG (Jun 2017 - Mar 2021)
+- Built route-planning microservices in Java and Go
+- Owned Redis caching layer and RabbitMQ messaging
+
+Backend Developer, WebWerk GmbH (Feb 2013 - May 2017)
+- Developed e-commerce backends in PHP and MySQL
+
+CERTIFICATIONS
+AWS Certified Solutions Architect - Associate, Amazon Web Services, 2022
+
+EDUCATION
+MSc Computer Science, TU Munich, 2012
+
+LANGUAGES
+German (native), English (fluent)

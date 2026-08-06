@@ -4,14 +4,8 @@ import {
   UnprocessableEntityException,
 } from "@nestjs/common";
 import { randomUUID } from "node:crypto";
-import type { Cv, CvAnalysis } from "@offerly/types";
-import { AiService } from "../ai/ai.service.js";
-import {
-  buildCvAnalysisPrompt,
-  parseCvAnalysisResult,
-  type CvAnalysisResult,
-} from "../ai/prompts/cv-analysis.v1.js";
-import { normalizeForCache, sha256Hex, truncateText } from "../ai/text.js";
+import type { Cv } from "@offerly/types";
+import { normalizeForCache, sha256Hex } from "../ai/text.js";
 import { SupabaseService } from "../supabase/supabase.service.js";
 import { extractText } from "./extract-text.js";
 
@@ -20,7 +14,6 @@ const ALLOWED_CONTENT_TYPES = new Map<string, string>([
   ["application/pdf", "pdf"],
   ["application/vnd.openxmlformats-officedocument.wordprocessingml.document", "docx"],
 ]);
-const MAX_CV_CHARS = 12_000; // input token cap (plan §8.4)
 const MIN_EXTRACTED_CHARS = 50; // below this a PDF is treated as scanned
 
 export interface SignedUpload {
@@ -31,10 +24,7 @@ export interface SignedUpload {
 
 @Injectable()
 export class CvsService {
-  constructor(
-    private readonly supabase: SupabaseService,
-    private readonly ai: AiService,
-  ) {}
+  constructor(private readonly supabase: SupabaseService) {}
 
   async list(userId: string, token: string): Promise<Cv[]> {
     const db = this.supabase.forUser(token);
@@ -186,67 +176,6 @@ export class CvsService {
       .single();
     if (updateError) throw new Error(`Failed to store extracted text: ${updateError.message}`);
     return data as Cv;
-  }
-
-  /**
-   * POST /cvs/:id/analyze (T5.3). Cached on CV content hash — re-analyzing an
-   * unchanged CV is a cache hit and free. Truncation is reported in the result.
-   */
-  async analyze(
-    userId: string,
-    token: string,
-    cvId: string,
-    depth: "basic" | "deep",
-  ): Promise<CvAnalysis> {
-    const cv = await this.getOwned(userId, token, cvId);
-    if (!cv.extracted_text || !cv.content_hash) {
-      throw new UnprocessableEntityException({
-        message: "This CV has no text yet — upload a file or paste the text first",
-        code: "no_text",
-      });
-    }
-
-    const truncated = truncateText(cv.extracted_text, MAX_CV_CHARS);
-    const prompt = buildCvAnalysisPrompt({ cvText: truncated.text, depth });
-    const result = await this.ai.generateJson<CvAnalysisResult>({
-      userId,
-      operation: "cv_analysis",
-      prompt,
-      maxTokens: depth === "deep" ? 2500 : 1500,
-      parse: parseCvAnalysisResult,
-    });
-
-    const db = this.supabase.forUser(token);
-    const { data, error } = await db
-      .from("cv_analyses")
-      .insert({
-        cv_id: cvId,
-        user_id: userId,
-        score: result.data.score,
-        result: {
-          ...result.data,
-          truncated: truncated.truncated,
-          analyzed_chars: truncated.text.length,
-          template_version: prompt.templateVersion,
-        },
-        depth,
-      })
-      .select("*")
-      .single();
-    if (error) throw new Error(`Failed to store analysis: ${error.message}`);
-    return data as CvAnalysis;
-  }
-
-  async listAnalyses(userId: string, token: string, cvId: string): Promise<CvAnalysis[]> {
-    const db = this.supabase.forUser(token);
-    const { data, error } = await db
-      .from("cv_analyses")
-      .select("*")
-      .eq("cv_id", cvId)
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false });
-    if (error) throw new Error(`Failed to list analyses: ${error.message}`);
-    return (data ?? []) as CvAnalysis[];
   }
 
   /**

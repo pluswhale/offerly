@@ -30,6 +30,9 @@ Two env files are needed — one per app. Get values from your Supabase project 
 | `LLM_PROVIDER_API_KEY` | OpenAI (or compatible) API key |
 | `LLM_BASE_URL` | `https://api.openai.com/v1` (default; Groq/Together/etc. work) |
 | `LLM_MODEL` | `gpt-4o-mini` (default) |
+| `LLM_MODEL_CHEAP` / `LLM_MODEL_STRONG` | optional per-tier model overrides (default: `LLM_MODEL`). Templates declare a tier (`cheap`/`strong`); only `cv-validate.v1` and `match-requirements.v1` are `strong` today |
+| `LLM_MODEL__<TEMPLATE_NAME>` | optional per-template override, beats the tier envs — templateVersion uppercased, non-alphanumerics → `_` (e.g. `cv-validate.v1` → `LLM_MODEL__CV_VALIDATE_V1`) |
+| `COACH_TEMPLATE_VERSION` | `v2` (default) or `v1` — rollback flag restoring the old raw-CV coach prompt without a deploy |
 | `LLM_MAX_CONCURRENCY` | `4` (default) |
 | `STRIPE_SECRET_KEY` | `sk_test_...` |
 | `STRIPE_WEBHOOK_SECRET` | `whsec_...` — from `stripe listen` (see §4), **not** the secret key |
@@ -97,17 +100,38 @@ Test upgrade flow: pricing → upgrade → pay with test card `4242 4242 4242 42
 ## 5. Tests & checks
 
 ```bash
-pnpm test        # 37 vitest tests (AI cache/truncation, entitlements matrix, JD heuristics, Stripe webhook logic — all mocked, no credentials needed)
+pnpm test        # 334 vitest tests (AI pipeline, matching, entitlements, billing — all mocked, no credentials needed)
 pnpm typecheck
 pnpm lint
 pnpm build
 ```
 
+### AI benchmark
+
+```bash
+pnpm bench:ai
+```
+
+Runs the extraction/matching benchmark against the fixture dataset (`apps/api/test/fixtures/ai-benchmark/`) and writes a Markdown report to `fixtures/ai-benchmark/reports/<templateVersion>.md`. Default mode is `replay` (offline, uses recorded LLM responses — safe without credentials). `AI_BENCH_MODE=live` hits the real provider (needs the API env from §1); `AI_BENCH_MODE=record` re-records fixtures. Exits 1 when a quality floor fails. Run it after touching anything in `apps/api/src/modules/ai/prompts/` and commit the updated report.
+
+### Cost & observability report
+
+```bash
+pnpm report:cost
+```
+
+Prints a Markdown report for the current month: per-operation calls/tokens/cost/cache-hit rates from `usage_records`, top-10 users by cost, p50/p95 pipeline stage durations from `candidate_profiles.stage_meta`, and the "AI spend per active user vs Pro price" verdict (constitution §V). Needs the API env loaded first (`SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` — see §1); it's read-only and fails with a clear message if the DB is unreachable.
+
 ## 6. Manual test walkthrough
+
+New AI pipeline endpoints (spec 003), all under `/api/v1/cvs` and auth-gated:
+
+- `POST /cvs/:id/profile` → runs the extraction pipeline (202 + status); `GET /cvs/:id/profile` → current profile; `PATCH /cvs/:id/profile` → user field correction `{path, value}` (survives re-analysis)
+- `POST /cvs/:id/improvements` → generates rewrites/health findings; `GET /cvs/:id/improvements` → list; `PATCH /cvs/:id/improvements/:rowId` → accept/reject a suggestion
 
 1. Sign up → 3-step onboarding → upload a real PDF/DOCX CV (or paste text).
 2. CV analysis: score + improvements; run it again unchanged → instant (cache hit, no quota used).
-3. `/match`: paste a job description → score, gaps, "Save to tracker".
+3. `/match`: paste a job description → score with breakdown, per-requirement verdicts, gaps, "Save to tracker".
 4. `/tracker`: add/move/delete entries; free tier caps at 10 active.
 5. `/coach` and full `/apply`: locked on free (402 → paywall). Upgrade via §4, then retry.
 6. Free AI quota is 5 requests/month — exhaust it to see the paywall, or reset by deleting your rows in `usage_records` (SQL editor in Supabase dashboard).

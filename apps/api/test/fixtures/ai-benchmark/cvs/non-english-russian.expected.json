@@ -1,0 +1,24 @@
+{
+  "description": "Non-English (Russian) CV: extraction must still anchor evidence to verbatim Cyrillic spans, and must not invent cloud/devops/leadership facts the CV never states.",
+  "stated": {
+    "headline.title": "Backend-разработчик",
+    "headline.seniority": "mid",
+    "headline.total_years_experience": 6,
+    "skills.programming_languages": ["Python"],
+    "skills.frameworks": ["Django"],
+    "skills.databases": ["PostgreSQL", "Redis"],
+    "languages": ["Русский", "Английский"],
+    "location.current": "Санкт-Петербург, Россия"
+  },
+  "unknown": [
+    "skills.cloud_platforms",
+    "skills.devops_tools",
+    "skills.soft_skills",
+    "experience.leadership",
+    "experience.management",
+    "experience.team_sizes_managed",
+    "location.remote_preference",
+    "location.work_authorization",
+    "certifications"
+  ]
+}

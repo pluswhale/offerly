@@ -1,0 +1,69 @@
+{
+  "headline": {
+    "title": { "value": "Junior Frontend Developer", "status": "stated", "confidence": 0.9, "evidence": "Junior Frontend Developer" },
+    "seniority": { "value": "junior", "status": "stated", "confidence": 0.85, "evidence": "Junior Frontend Developer" },
+    "total_years_experience": { "value": 1, "status": "stated", "confidence": 0.75, "evidence": "Jan 2025 - present" }
+  },
+  "roles": [
+    {
+      "title": { "value": "Junior Frontend Developer", "status": "stated", "confidence": 0.9, "evidence": "Junior Frontend Developer, BrightApps (Jan 2025 - present)" },
+      "company": { "value": "BrightApps", "status": "stated", "confidence": 0.9, "evidence": "BrightApps (Jan 2025 - present)" },
+      "start": { "value": "Jan 2025", "status": "stated", "confidence": 0.9, "evidence": "Jan 2025 - present" },
+      "end": { "value": "present", "status": "stated", "confidence": 0.9, "evidence": "Jan 2025 - present" },
+      "industry": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "is_current": true
+    },
+    {
+      "title": { "value": "Frontend Intern", "status": "stated", "confidence": 0.9, "evidence": "Frontend Intern, BrightApps (Mar 2024 - Dec 2024)" },
+      "company": { "value": "BrightApps", "status": "stated", "confidence": 0.9, "evidence": "BrightApps (Mar 2024 - Dec 2024)" },
+      "start": { "value": "Mar 2024", "status": "stated", "confidence": 0.9, "evidence": "Mar 2024 - Dec 2024" },
+      "end": { "value": "Dec 2024", "status": "stated", "confidence": 0.9, "evidence": "Mar 2024 - Dec 2024" },
+      "industry": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+      "is_current": false
+    }
+  ],
+  "skills": {
+    "programming_languages": [
+      { "value": "JavaScript", "status": "stated", "confidence": 0.9, "evidence": "Build landing pages in JavaScript and React", "years": null, "recency": "BrightApps" }
+    ],
+    "frameworks": [
+      { "value": "React", "status": "stated", "confidence": 0.9, "evidence": "Build landing pages in JavaScript and React", "years": null, "recency": "BrightApps" }
+    ],
+    "cloud_platforms": [],
+    "databases": [],
+    "devops_tools": [],
+    "other_technologies": [
+      { "value": "HTML", "status": "stated", "confidence": 0.85, "evidence": "Helped migrate HTML templates to React components", "years": null, "recency": null },
+      { "value": "CSS", "status": "stated", "confidence": 0.85, "evidence": "Fix CSS layout bugs reported by the design team", "years": null, "recency": "BrightApps" }
+    ],
+    "soft_skills": []
+  },
+  "experience": {
+    "industries": [],
+    "domains": [],
+    "team_sizes_managed": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "leadership": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "leadership_scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "management": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+    "management_scope": { "value": null, "status": "unknown", "confidence": 0, "evidence": null }
+  },
+  "education": [
+    {
+      "degree": { "value": "BSc Computer Science", "status": "stated", "confidence": 0.9, "evidence": "BSc Computer Science, University of Warsaw, 2024" },
+      "institution": { "value": "University of Warsaw", "status": "stated", "confidence": 0.9, "evidence": "BSc Computer Science, University of Warsaw, 2024" },
+      "year": { "value": 2024, "status": "stated", "confidence": 0.9, "evidence": "BSc Computer Science, University of Warsaw, 2024" }
+    }
+  ],
+  "certifications": [],
+  "languages": [
+    { "language": { "value": "Polish", "status": "stated", "confidence": 0.9, "evidence": "Polish (native)" }, "level": { "value": "native", "status": "stated", "confidence": 0.9, "evidence": "Polish (native)" } },
+    { "language": { "value": "English", "status": "stated", "confidence": 0.9, "evidence": "English (professional)" }, "level": { "value": "professional", "status": "stated", "confidence": 0.9, "evidence": "English (professional)" } }
+  ],
+  "location": {
+    "current": { "value": "Warsaw, Poland", "status": "stated", "confidence": 0.9, "evidence": "Warsaw, Poland" },
+    "work_authorization": [],
+    "remote_preference": { "value": null, "status": "unknown", "confidence": 0, "evidence": null }
+  }
+}

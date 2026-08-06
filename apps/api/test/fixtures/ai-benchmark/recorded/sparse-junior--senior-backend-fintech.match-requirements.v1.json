@@ -1,0 +1,46 @@
+{
+  "verdicts": [
+    {
+      "requirement_id": "req-2",
+      "verdict": "unknown",
+      "confidence": 0.85,
+      "candidate_evidence": [],
+      "reasoning": "The profile's skills cover JavaScript, React, HTML and CSS; TypeScript and Node.js are never mentioned, so the profile is silent on this space."
+    },
+    {
+      "requirement_id": "req-3",
+      "verdict": "unknown",
+      "confidence": 0.85,
+      "candidate_evidence": [],
+      "reasoning": "The profile's databases section is empty — the CV never mentions PostgreSQL, Redis, or any database, so this stays unknown rather than missing."
+    },
+    {
+      "requirement_id": "req-4",
+      "verdict": "unknown",
+      "confidence": 0.85,
+      "candidate_evidence": [],
+      "reasoning": "The profile's cloud platforms section is empty — the CV is silent on AWS."
+    },
+    {
+      "requirement_id": "req-5",
+      "verdict": "unknown",
+      "confidence": 0.85,
+      "candidate_evidence": [],
+      "reasoning": "The profile lists no devops tools at all — the CV never mentions Docker or CI/CD, so the profile is silent on this space."
+    },
+    {
+      "requirement_id": "req-7",
+      "verdict": "unknown",
+      "confidence": 0.85,
+      "candidate_evidence": [],
+      "reasoning": "The profile's industries and domains sections are empty — the CV is silent on industry experience, fintech or otherwise."
+    },
+    {
+      "requirement_id": "req-8",
+      "verdict": "unknown",
+      "confidence": 0.85,
+      "candidate_evidence": [],
+      "reasoning": "Kubernetes is never mentioned in the profile; the devops space is silent, so absence is not claimed."
+    }
+  ]
+}

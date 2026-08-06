@@ -1,0 +1,78 @@
+{
+  "required_skills": [
+    { "value": "TypeScript", "status": "stated", "confidence": 0.9, "evidence": "Strong TypeScript and Node.js skills" },
+    { "value": "Node.js", "status": "stated", "confidence": 0.9, "evidence": "Strong TypeScript and Node.js skills" },
+    { "value": "PostgreSQL", "status": "stated", "confidence": 0.9, "evidence": "Production experience with PostgreSQL and Redis" },
+    { "value": "Redis", "status": "stated", "confidence": 0.9, "evidence": "Production experience with PostgreSQL and Redis" },
+    { "value": "AWS", "status": "stated", "confidence": 0.9, "evidence": "Hands-on AWS experience (ECS, RDS)" },
+    { "value": "Docker", "status": "stated", "confidence": 0.9, "evidence": "Docker-based deployments and CI/CD pipelines" },
+    { "value": "CI/CD", "status": "stated", "confidence": 0.9, "evidence": "Docker-based deployments and CI/CD pipelines" }
+  ],
+  "preferred_skills": [
+    { "value": "Kubernetes", "status": "stated", "confidence": 0.9, "evidence": "Kubernetes" }
+  ],
+  "min_years_experience": { "value": 5, "status": "stated", "confidence": 0.9, "evidence": "5+ years of backend development experience" },
+  "industry": { "value": "fintech", "status": "stated", "confidence": 0.9, "evidence": "Experience in fintech or payments" },
+  "location": { "value": "Berlin, Germany", "status": "stated", "confidence": 0.9, "evidence": "FinLane GmbH — Berlin, Germany" },
+  "remote_policy": { "value": "hybrid", "status": "stated", "confidence": 0.9, "evidence": "hybrid, 3 days per week in the office" },
+  "languages": [
+    { "value": "English", "status": "stated", "confidence": 0.9, "evidence": "Fluent English (C1)" }
+  ],
+  "education_requirements": [],
+  "requirements": [
+    {
+      "id": "req-1",
+      "text": { "value": "5+ years of backend development experience", "status": "stated", "confidence": 0.9, "evidence": "5+ years of backend development experience" },
+      "category": "experience",
+      "importance": "must_have"
+    },
+    {
+      "id": "req-2",
+      "text": { "value": "Strong TypeScript and Node.js skills", "status": "stated", "confidence": 0.9, "evidence": "Strong TypeScript and Node.js skills" },
+      "category": "skill",
+      "importance": "must_have"
+    },
+    {
+      "id": "req-3",
+      "text": { "value": "Production experience with PostgreSQL and Redis", "status": "stated", "confidence": 0.9, "evidence": "Production experience with PostgreSQL and Redis" },
+      "category": "skill",
+      "importance": "must_have"
+    },
+    {
+      "id": "req-4",
+      "text": { "value": "Hands-on AWS experience (ECS, RDS)", "status": "stated", "confidence": 0.9, "evidence": "Hands-on AWS experience (ECS, RDS)" },
+      "category": "skill",
+      "importance": "must_have"
+    },
+    {
+      "id": "req-5",
+      "text": { "value": "Docker-based deployments and CI/CD pipelines", "status": "stated", "confidence": 0.9, "evidence": "Docker-based deployments and CI/CD pipelines" },
+      "category": "skill",
+      "importance": "must_have"
+    },
+    {
+      "id": "req-6",
+      "text": { "value": "Fluent English (C1)", "status": "stated", "confidence": 0.9, "evidence": "Fluent English (C1)" },
+      "category": "language",
+      "importance": "must_have"
+    },
+    {
+      "id": "req-7",
+      "text": { "value": "Experience in fintech or payments", "status": "stated", "confidence": 0.9, "evidence": "Experience in fintech or payments" },
+      "category": "industry",
+      "importance": "nice_to_have"
+    },
+    {
+      "id": "req-8",
+      "text": { "value": "Kubernetes", "status": "stated", "confidence": 0.9, "evidence": "Kubernetes" },
+      "category": "skill",
+      "importance": "nice_to_have"
+    },
+    {
+      "id": "req-9",
+      "text": { "value": "German language skills", "status": "stated", "confidence": 0.9, "evidence": "German language skills" },
+      "category": "language",
+      "importance": "nice_to_have"
+    }
+  ]
+}

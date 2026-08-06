@@ -1,0 +1,11 @@
+{
+  "required_skills": [],
+  "preferred_skills": [],
+  "min_years_experience": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+  "industry": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+  "location": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+  "remote_policy": { "value": null, "status": "unknown", "confidence": 0, "evidence": null },
+  "languages": [],
+  "education_requirements": [],
+  "requirements": []
+}

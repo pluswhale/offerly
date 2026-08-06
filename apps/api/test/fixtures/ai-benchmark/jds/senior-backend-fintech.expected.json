@@ -1,0 +1,11 @@
+{
+  "description": "Well-formed senior backend JD with explicit must-haves (drives the Phase 3 verdict pairs in pairs/).",
+  "expected": {
+    "required_skills": ["TypeScript", "Node.js", "PostgreSQL", "Redis", "AWS", "Docker", "CI/CD"],
+    "preferred_skills": ["Kubernetes"],
+    "min_years_experience": 5,
+    "remote_policy": "hybrid",
+    "languages": ["English"],
+    "industry": "fintech"
+  }
+}

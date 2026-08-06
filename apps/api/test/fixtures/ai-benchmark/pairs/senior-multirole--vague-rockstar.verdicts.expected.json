@@ -1,0 +1,6 @@
+{
+  "description": "Senior multi-role CV vs the vague rockstar JD: the JD states zero concrete requirements, so there is nothing to classify — no pre-pass verdicts and no LLM call.",
+  "cv": "senior-multirole",
+  "jd": "vague-rockstar",
+  "expected_verdicts": {}
+}

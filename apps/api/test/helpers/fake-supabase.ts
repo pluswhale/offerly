@@ -13,6 +13,8 @@ export interface Terminal {
 export class FakeSupabaseClient {
   /** Recorded mutating calls for assertions: [table, method, payload]. */
   readonly calls: Array<{ table: string; method: string; payload: unknown }> = [];
+  /** Recorded from() calls for assertions (e.g. "table X is never queried"). */
+  readonly fromCalls: string[] = [];
   /** Recorded storage calls for assertions. */
   readonly storageCalls: Array<{ bucket: string; method: string; args: unknown[] }> = [];
   /** When set, storage.remove resolves with this error (best-effort delete tests). */
@@ -41,6 +43,7 @@ export class FakeSupabaseClient {
   }
 
   from(table: string): unknown {
+    this.fromCalls.push(table);
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const self = this;
     const nextTerminal = (): Terminal => {

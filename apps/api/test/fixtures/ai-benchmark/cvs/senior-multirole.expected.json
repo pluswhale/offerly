@@ -1,0 +1,25 @@
+{
+  "description": "Senior multi-role CV with three dated roles, leadership scope, a certification and dated total-years derivation. No remote preference or work authorization is mentioned — they must stay UNKNOWN.",
+  "stated": {
+    "headline.title": "Lead Backend Engineer",
+    "headline.seniority": "lead",
+    "headline.total_years_experience": 13,
+    "skills.programming_languages": ["Kotlin", "Java", "Go", "PHP"],
+    "skills.frameworks": ["Spring Boot"],
+    "skills.databases": ["PostgreSQL", "MySQL", "Redis"],
+    "skills.cloud_platforms": ["AWS"],
+    "skills.devops_tools": ["Kubernetes", "Docker", "Terraform"],
+    "skills.other_technologies": ["RabbitMQ"],
+    "experience.team_sizes_managed": 6,
+    "experience.leadership": true,
+    "languages": ["German", "English"],
+    "location.current": "Munich, Germany"
+  },
+  "unknown": [
+    "skills.soft_skills",
+    "experience.management",
+    "experience.management_scope",
+    "location.remote_preference",
+    "location.work_authorization"
+  ]
+}

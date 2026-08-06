@@ -1,0 +1,6 @@
+{
+  "description": "Sparse junior CV vs the vague rockstar JD: zero concrete requirements — nothing to classify, no LLM call.",
+  "cv": "sparse-junior",
+  "jd": "vague-rockstar",
+  "expected_verdicts": {}
+}
