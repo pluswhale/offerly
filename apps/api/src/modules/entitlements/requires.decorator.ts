@@ -8,6 +8,7 @@ export type GatedFeature =
   | "job_match"
   | "apply_generate"
   | "coach"
+  | "interview_prep"
   | "application_create"
   | "application_modify";
 

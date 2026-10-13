@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { href: "/match", label: "Match" },
   { href: "/apply", label: "Apply" },
   { href: "/tracker", label: "Tracker" },
+  { href: "/prep", label: "Prep" },
   { href: "/coach", label: "Coach" },
   { href: "/settings", label: "Settings" },
 ];

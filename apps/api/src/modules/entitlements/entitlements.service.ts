@@ -93,6 +93,13 @@ export class EntitlementsService {
         return null;
       }
 
+      case "interview_prep": {
+        if (!limits.interviewPrep) {
+          return { feature, reason: "Interview prep is a Pro feature" };
+        }
+        return null;
+      }
+
       case "apply_generate": {
         if (limits.applyAssistant === "full") return null;
         // Free = "sample": one generation ever, then 402.

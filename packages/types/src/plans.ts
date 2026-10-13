@@ -7,6 +7,7 @@ export interface PlanLimits {
   activeApplications: number;
   applyAssistant: "sample" | "full";
   coach: boolean;
+  interviewPrep: boolean;
   matchDepth: AnalysisDepth;
 }
 
@@ -23,6 +24,7 @@ export const PLAN_LIMITS: Record<SubscriptionPlan, PlanLimits> = {
     activeApplications: 10,
     applyAssistant: "sample",
     coach: false,
+    interviewPrep: false,
     matchDepth: "basic",
   },
   pro: {
@@ -32,6 +34,7 @@ export const PLAN_LIMITS: Record<SubscriptionPlan, PlanLimits> = {
     activeApplications: Infinity,
     applyAssistant: "full",
     coach: true,
+    interviewPrep: true,
     matchDepth: "deep",
   },
 } as const;

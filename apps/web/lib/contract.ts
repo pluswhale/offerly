@@ -101,6 +101,26 @@ export interface ApplyGeneration {
   sample: boolean;
 }
 
+/* ---------- Interview Prep ---------- */
+
+export interface InterviewPrepQuestion {
+  question: string;
+  /** Why this role/JD makes the question likely. */
+  why: string;
+  /** 2-3 points, grounded in the CV only. */
+  talking_points: string[];
+}
+
+/** POST /applications/:id/interview-prep response. */
+export interface InterviewPrepResponse {
+  questions: InterviewPrepQuestion[];
+  questions_to_ask: string[];
+  /** JD requirements the CV does not evidence (spec 004 honesty rule). */
+  gaps_flagged: string[];
+  /** True when served from llm_cache — the repeat cost the user nothing. */
+  cached: boolean;
+}
+
 /* ---------- Coach ---------- */
 
 /** POST /coach/conversations */

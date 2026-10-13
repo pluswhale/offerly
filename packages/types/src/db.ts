@@ -133,7 +133,8 @@ export type UsageOperation =
   | "cv_analysis"
   | "job_match"
   | "apply_generate"
-  | "coach_message";
+  | "coach_message"
+  | "interview_prep";
 
 export interface UsageRecord {
   id: string;

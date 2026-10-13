@@ -8,6 +8,7 @@ import { CoachModule } from "./modules/coach/coach.module.js";
 import { CvsModule } from "./modules/cvs/cvs.module.js";
 import { EntitlementsModule } from "./modules/entitlements/entitlements.module.js";
 import { JobsModule } from "./modules/jobs/jobs.module.js";
+import { PrepModule } from "./modules/prep/prep.module.js";
 import { ProfilesModule } from "./modules/profiles/profiles.module.js";
 import { SupabaseModule } from "./modules/supabase/supabase.module.js";
 import { UsageModule } from "./modules/usage/usage.module.js";
@@ -22,6 +23,7 @@ import { UsageModule } from "./modules/usage/usage.module.js";
     CvsModule,
     JobsModule,
     ApplicationsModule,
+    PrepModule,
     CoachModule,
     BillingModule,
     UsageModule,
