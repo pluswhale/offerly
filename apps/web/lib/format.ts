@@ -9,9 +9,10 @@ export function formatDate(iso: string | null | undefined): string {
   });
 }
 
-export function formatRelative(iso: string): string {  const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return "";
-  const diffMs = Date.now() - then;
+export function formatRelative(iso: string, now: number = Date.now()): string {
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "—";
+  const diffMs = now - then;
   const minutes = Math.floor(diffMs / 60000);
   if (minutes < 1) return "just now";
   if (minutes < 60) return `${minutes}m ago`;
