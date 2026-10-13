@@ -6,7 +6,8 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
     "@offerly/types": "workspace:*",
@@ -26,6 +27,7 @@
     "eslint": "9.39.5",
     "eslint-config-next": "16.2.12",
     "tailwindcss": "4.3.3",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "4.1.10"
   }
 }
