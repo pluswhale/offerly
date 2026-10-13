@@ -1,5 +1,5 @@
-import { ServiceUnavailableException } from "@nestjs/common";
-import { describe, expect, it, vi } from "vitest";
+import { Logger, ServiceUnavailableException } from "@nestjs/common";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { AiService } from "../src/modules/ai/ai.service.js";
 import { LlmProviderError, type LlmProvider } from "../src/modules/ai/llm-provider.js";
 import {
@@ -72,6 +72,20 @@ const OPTS = {
 };
 
 describe("AiService cache behavior (T5.2)", () => {
+  const originalModel = process.env.LLM_MODEL;
+
+  beforeEach(() => {
+    process.env.LLM_MODEL = "gpt-4o-mini";
+  });
+
+  afterEach(() => {
+    if (originalModel === undefined) {
+      delete process.env.LLM_MODEL;
+    } else {
+      process.env.LLM_MODEL = originalModel;
+    }
+  });
+
   it("miss → provider call + usage row; identical repeat → cache hit, no provider call, cache_hit logged", async () => {
     const provider = makeProvider([JSON.stringify(VALID_ANALYSIS)]);
     const { supabase, usage } = makeSupabase();
@@ -164,5 +178,62 @@ describe("AiService cache behavior (T5.2)", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+});
+
+describe("AiService cost logging for unpriced models (T02)", () => {
+  const originalModel = process.env.LLM_MODEL;
+
+  afterEach(() => {
+    if (originalModel === undefined) {
+      delete process.env.LLM_MODEL;
+    } else {
+      process.env.LLM_MODEL = originalModel;
+    }
+    vi.restoreAllMocks();
+  });
+
+  it("logs cost_microcents: null for a model with no pricing entry, and warns once at construction", async () => {
+    process.env.LLM_MODEL = "openai/gpt-oss-120b";
+    const warn = vi.spyOn(Logger.prototype, "warn").mockImplementation(() => {});
+    const provider = makeProvider([JSON.stringify(VALID_ANALYSIS)]);
+    const { supabase, usage } = makeSupabase();
+
+    const ai = new AiService(supabase, provider);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn.mock.calls[0]?.[0]).toContain("openai/gpt-oss-120b");
+
+    await ai.generateJson(OPTS);
+    await ai.generateJson(OPTS); // cache hit
+
+    expect(warn).toHaveBeenCalledTimes(1); // construction only, not per request
+    expect(usage).toHaveLength(2);
+    expect(usage[0]).toMatchObject({
+      operation: "cv_analysis",
+      tokens_in: 100,
+      tokens_out: 50,
+      cache_hit: false,
+      cost_microcents: null,
+    });
+    expect(usage[1]).toMatchObject({
+      tokens_in: 0,
+      tokens_out: 0,
+      cache_hit: true,
+      cost_microcents: null,
+    });
+  });
+
+  it("keeps the existing cost calculation for a priced model", async () => {
+    process.env.LLM_MODEL = "gpt-4o-mini";
+    const warn = vi.spyOn(Logger.prototype, "warn").mockImplementation(() => {});
+    const provider = makeProvider([JSON.stringify(VALID_ANALYSIS)]);
+    const { supabase, usage } = makeSupabase();
+
+    const ai = new AiService(supabase, provider);
+    await ai.generateJson(OPTS);
+
+    expect(warn).not.toHaveBeenCalled();
+    // 100 in * 15_000_000 + 50 out * 60_000_000, per 1M tokens.
+    expect(usage[0]?.cost_microcents).toBe(4500);
   });
 });

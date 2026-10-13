@@ -1,4 +1,4 @@
-import { Inject, Injectable, ServiceUnavailableException } from "@nestjs/common";
+import { Inject, Injectable, Logger, ServiceUnavailableException } from "@nestjs/common";
 import type { UsageOperation } from "@offerly/types";
 import { env } from "../../common/env.js";
 import { SupabaseService } from "../supabase/supabase.service.js";
@@ -16,7 +16,6 @@ import { estimateTokens, normalizeForCache, sha256Hex } from "./text.js";
 const MODEL_PRICING_MICROCENTS_PER_1M: Record<string, { in: number; out: number }> = {
   "gpt-4o-mini": { in: 15_000_000, out: 60_000_000 }, // $0.15 / $0.60 per 1M
 };
-const DEFAULT_PRICING = { in: 15_000_000, out: 60_000_000 };
 
 export interface GenerateJsonOptions<T> {
   userId: string;
@@ -43,6 +42,7 @@ export interface GenerateJsonResult<T> {
  */
 @Injectable()
 export class AiService {
+  private readonly logger = new Logger(AiService.name);
   private readonly model = env("LLM_MODEL", "gpt-4o-mini");
   private readonly limiter = new ConcurrencyLimiter(
     Number(env("LLM_MAX_CONCURRENCY", "4")),
@@ -51,7 +51,13 @@ export class AiService {
   constructor(
     private readonly supabase: SupabaseService,
     @Inject(LLM_PROVIDER) private readonly provider: LlmProvider,
-  ) {}
+  ) {
+    if (!MODEL_PRICING_MICROCENTS_PER_1M[this.model]) {
+      this.logger.warn(
+        `No pricing entry for LLM model "${this.model}" — cost will not be recorded for its usage.`,
+      );
+    }
+  }
 
   cacheKey(prompt: BuiltPrompt): string {
     return sha256Hex(`${prompt.templateVersion}:${normalizeForCache(prompt.cacheInput)}`);
@@ -226,10 +232,10 @@ export class AiService {
     tokensOut: number,
     cacheHit: boolean,
   ): Promise<void> {
-    const pricing = MODEL_PRICING_MICROCENTS_PER_1M[this.model] ?? DEFAULT_PRICING;
-    const cost = Math.round(
-      (tokensIn * pricing.in + tokensOut * pricing.out) / 1_000_000,
-    );
+    const pricing = MODEL_PRICING_MICROCENTS_PER_1M[this.model];
+    const cost = pricing
+      ? Math.round((tokensIn * pricing.in + tokensOut * pricing.out) / 1_000_000)
+      : null;
     await this.supabase.getServiceClient().from("usage_records").insert({
       user_id: userId,
       operation,
