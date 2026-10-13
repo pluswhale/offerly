@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type DragEvent, type FormEvent } from "react";
+import { useMemo, useState, type DragEvent, type FormEvent } from "react";
 import {
   APPLICATION_STATUSES,
   type Application,
@@ -10,17 +10,23 @@ import {
 } from "@offerly/types";
 import { api, PaywallError } from "@/lib/api";
 import { useApi } from "@/lib/use-api";
-import { formatDate } from "@/lib/format";
+import { formatDate, formatRelative } from "@/lib/format";
 import type { UpgradeRequiredPayload } from "@/lib/contract";
+import { STALE_DAYS, derivePipelineInsights } from "@/lib/pipeline-insights";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
+import { Card, CardBody, CardHeader } from "@/components/card";
 import { EmptyState } from "@/components/empty-state";
 import { Input } from "@/components/input";
+import { InsightTile } from "@/components/insight-tile";
 import { Modal } from "@/components/modal";
 import { PaywallModal } from "@/components/paywall-modal";
+import { PipelineFunnel } from "@/components/pipeline-funnel";
 import { Skeleton } from "@/components/skeleton";
 import { StatusBadge } from "@/components/status-badge";
 import { Textarea } from "@/components/textarea";
+
+const pct = (value: number | null) => (value === null ? "—" : `${Math.round(value * 100)}%`);
 
 const STATUS_LABELS: Record<ApplicationStatus, string> = {
   saved: "Saved",
@@ -39,7 +45,7 @@ export function TrackerClient() {
 
   // Local copy for optimistic updates; resynced on every successful fetch.
   const [local, setLocal] = useState<Application[] | null>(null);
-  const applications = local ?? data ?? [];
+  const applications = useMemo(() => local ?? data ?? [], [local, data]);
 
   const [editing, setEditing] = useState<Application | "new" | null>(null);
   const [deleting, setDeleting] = useState<Application | null>(null);
@@ -128,6 +134,9 @@ export function TrackerClient() {
 
   const visible = applications.filter((a) => (showArchived ? true : !a.archived));
 
+  // Derived from the same local array the board renders, so optimistic moves update it for free.
+  const insights = useMemo(() => derivePipelineInsights(applications, new Date()), [applications]);
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -151,6 +160,82 @@ export function TrackerClient() {
         <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
           {actionError}
         </p>
+      )}
+
+      {!loading && !error && data && insights.total > 0 && (
+        <section aria-label="Pipeline insights" className="flex flex-col gap-4">
+          <div className="grid gap-3 md:grid-cols-3">
+            <InsightTile
+              label="Reply rate"
+              value={pct(insights.replyRate)}
+              hint="Of everything you applied to"
+            />
+            <InsightTile
+              label="Interview rate"
+              value={pct(insights.interviewRate)}
+              hint="Reached interview or offer"
+            />
+            <InsightTile
+              label="Needs a nudge"
+              value={String(insights.staleCount)}
+              hint={`Quiet for over ${STALE_DAYS} days`}
+              tone={insights.staleCount > 0 ? "warn" : "default"}
+            />
+          </div>
+
+          <div className="grid gap-3 md:grid-cols-2">
+            <Card>
+              <CardHeader
+                title="Funnel"
+                description="Where your applications stand now, and the share carried over from the stage above."
+              />
+              <CardBody>
+                <PipelineFunnel stages={insights.funnel} />
+              </CardBody>
+            </Card>
+
+            <Card>
+              <CardHeader title="Needs a nudge" description="Quiet the longest — follow up." />
+              <CardBody>
+                {insights.staleApplications.length === 0 ? (
+                  <p className="text-sm text-neutral-500">
+                    Nothing has gone quiet — every open application was touched in the last{" "}
+                    {STALE_DAYS} days.
+                  </p>
+                ) : (
+                  <ul className="flex flex-col divide-y divide-neutral-100">
+                    {insights.staleApplications.map((app) => (
+                      <li key={app.id}>
+                        <button
+                          type="button"
+                          onClick={() => setEditing(app)}
+                          className="flex min-h-11 w-full items-center justify-between gap-3 py-2 text-left"
+                        >
+                          <span className="min-w-0">
+                            <span className="block truncate text-sm font-medium text-neutral-900">
+                              {app.role}
+                            </span>
+                            <span className="block truncate text-xs text-neutral-500">
+                              {app.company}
+                            </span>
+                          </span>
+                          <span className="shrink-0 text-xs text-neutral-500">
+                            {formatRelative(app.updated_at)}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </CardBody>
+            </Card>
+          </div>
+
+          <p className="text-xs text-neutral-500">
+            A snapshot of where your applications stand today, not a history: rejections count as
+            applied but not as interviews, and archived entries are excluded.
+          </p>
+        </section>
       )}
 
       {loading ? (
