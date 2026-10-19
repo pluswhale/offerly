@@ -88,6 +88,7 @@ export interface Application {
   applied_at: string | null;
   notes: string | null;
   archived: boolean;
+  status_changed_at: string;
   created_at: string;
   updated_at: string;
 }

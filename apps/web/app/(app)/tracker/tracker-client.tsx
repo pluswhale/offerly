@@ -11,6 +11,7 @@ import {
 import { api, PaywallError } from "@/lib/api";
 import { useApi } from "@/lib/use-api";
 import { formatDate } from "@/lib/format";
+import { daysInStage, derivePipelineInsights } from "@/lib/pipeline-insights";
 import type { UpgradeRequiredPayload } from "@/lib/contract";
 import { Badge } from "@/components/badge";
 import { Button } from "@/components/button";
@@ -18,6 +19,7 @@ import { EmptyState } from "@/components/empty-state";
 import { Input } from "@/components/input";
 import { Modal } from "@/components/modal";
 import { PaywallModal } from "@/components/paywall-modal";
+import { PipelineInsights } from "@/components/pipeline-insights";
 import { Skeleton } from "@/components/skeleton";
 import { StatusBadge } from "@/components/status-badge";
 import { Textarea } from "@/components/textarea";
@@ -79,7 +81,9 @@ export function TrackerClient() {
   function changeStatus(app: Application, status: ApplicationStatus) {
     if (app.status === status) return;
     void mutate(
-      applications.map((a) => (a.id === app.id ? { ...a, status } : a)),
+      applications.map((a) =>
+        a.id === app.id ? { ...a, status, status_changed_at: new Date().toISOString() } : a,
+      ),
       () =>
         api(`/applications/${app.id}`, {
           method: "PATCH",
@@ -127,6 +131,9 @@ export function TrackerClient() {
   }
 
   const visible = applications.filter((a) => (showArchived ? true : !a.archived));
+  const now = new Date();
+  const insights = derivePipelineInsights(applications, now);
+  const hasActive = applications.some((a) => !a.archived);
 
   return (
     <div className="flex flex-col gap-6">
@@ -173,6 +180,10 @@ export function TrackerClient() {
         />
       ) : (
         <>
+          {hasActive && (
+            <PipelineInsights insights={insights} now={now} onSelect={(app) => setEditing(app)} />
+          )}
+
           {/* Desktop kanban (native HTML5 DnD — no library, per constraints) */}
           <div className="hidden gap-3 md:grid md:grid-cols-5">
             {APPLICATION_STATUSES.map((status) => {
@@ -195,6 +206,7 @@ export function TrackerClient() {
                     <TrackerCard
                       key={app.id}
                       app={app}
+                      now={now}
                       draggable
                       onDragStart={(e) => onDragStart(e, app.id)}
                       onClick={() => setEditing(app)}
@@ -217,6 +229,9 @@ export function TrackerClient() {
                   >
                     <p className="truncate text-sm font-semibold text-neutral-900">{app.role}</p>
                     <p className="truncate text-sm text-neutral-500">{app.company}</p>
+                    <p className="mt-0.5 text-xs text-neutral-400">
+                      {daysInStage(app, now)}d in stage
+                    </p>
                   </button>
                   <StatusBadge status={app.status} />
                 </div>
@@ -303,11 +318,13 @@ export function TrackerClient() {
 
 function TrackerCard({
   app,
+  now,
   draggable,
   onDragStart,
   onClick,
 }: {
   app: Application;
+  now: Date;
   draggable?: boolean;
   onDragStart?: (e: DragEvent) => void;
   onClick: () => void;
@@ -328,6 +345,7 @@ function TrackerCard({
         {app.applied_at && (
           <span className="text-[11px] text-neutral-400">{formatDate(app.applied_at)}</span>
         )}
+        <span className="ml-auto text-[11px] text-neutral-400">{daysInStage(app, now)}d in stage</span>
       </div>
     </button>
   );
