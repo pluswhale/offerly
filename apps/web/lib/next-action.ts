@@ -1,4 +1,5 @@
 import type { Application, Cv } from "@offerly/types";
+import { QUIET_DAYS, isQuiet } from "./pipeline-insights";
 
 export interface NextAction {
   title: string;
@@ -6,8 +7,6 @@ export interface NextAction {
   href: string;
   cta: string;
 }
-
-const FOLLOW_UP_DAYS = 7;
 
 /**
  * Client-side rule engine for the dashboard "next best action" card
@@ -55,16 +54,12 @@ export function nextBestAction(input: {
   }
 
   // 4. Stale applications → follow up.
-  const cutoff = Date.now() - FOLLOW_UP_DAYS * 24 * 60 * 60 * 1000;
-  const stale = active.filter(
-    (a) =>
-      a.status === "applied" &&
-      (a.applied_at ?? a.created_at) < new Date(cutoff).toISOString(),
-  );
+  const now = new Date();
+  const stale = active.filter((a) => isQuiet(a, now));
   if (stale.length > 0) {
     return {
       title: `Follow up on ${stale.length} application${stale.length === 1 ? "" : "s"}`,
-      description: `Applied more than ${FOLLOW_UP_DAYS} days ago with no reply. A short follow-up keeps you on the radar.`,
+      description: `No movement in more than ${QUIET_DAYS} days. A short follow-up keeps you on the radar.`,
       href: "/tracker",
       cta: "Open tracker",
     };
